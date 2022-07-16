@@ -3,20 +3,21 @@ name: "for test"
 on: ["push", "pull_request"]
 
 jobs:
-  name: "test"
-  runs-on: "ubuntu-latest"
-  steps:
-    - name: build
-      id: build
-      shell: bash
-      run: |
-        make test
-    - name: run
-      id: run
-      shell: bash
-      run: |
-        TESTS=(`echo ./test*.out`)
-        for x in "${TESTS[@]}"
-        do
-          $x
-        done
+  test:
+    name: "test"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: build
+        id: build
+        shell: bash
+        run: |
+          make test
+      - name: run
+        id: run
+        shell: bash
+        run: |
+          TESTS=(`echo ./test*.out`)
+          for x in "${TESTS[@]}"
+          do
+            $x
+          done
