@@ -12,6 +12,7 @@ jobs:
         shell: bash
         run: |
           ls ${{ github.workspace }}
+          echo "hi"
       - name: run
         id: run
         shell: bash
