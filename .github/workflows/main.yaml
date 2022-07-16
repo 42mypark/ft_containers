@@ -11,7 +11,7 @@ jobs:
         id: build
         shell: bash
         run: |
-          ls ${{github.workspace}}
+          ls ${{ github.workspace }}
       - name: run
         id: run
         shell: bash
