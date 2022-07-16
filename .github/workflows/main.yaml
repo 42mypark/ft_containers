@@ -12,7 +12,8 @@ jobs:
         shell: bash
         run: |
           ls ${{ github.workspace }}
-          xargs echo
+          echo ${{ github.workspace }}
+
       - name: run
         id: run
         shell: bash
