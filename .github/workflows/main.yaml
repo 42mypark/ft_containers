@@ -2,6 +2,9 @@ name: "for test"
 
 on: ["push", "pull_request"]
 
+branchs:
+  - main
+
 jobs:
   test:
     name: "test"
@@ -11,12 +14,12 @@ jobs:
         id: build
         shell: bash
         run: |
-          make test
+          make -C ${{github.workspace}} test
       - name: run
         id: run
         shell: bash
         run: |
-          TESTS=(`echo ./test*.out`)
+          TESTS=(`echo ${{github.workspace}}/test*.out`)
           for x in "${TESTS[@]}"
           do
             $x
