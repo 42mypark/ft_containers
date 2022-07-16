@@ -2,9 +2,6 @@ name: "for test"
 
 on: ["push", "pull_request"]
 
-branchs:
-  - main
-
 jobs:
   test:
     name: "test"
