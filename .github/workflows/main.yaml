@@ -11,6 +11,7 @@ jobs:
         id: build
         shell: bash
         run: |
+          ls ${{github.workspace}}
           make -C ${{github.workspace}} test
       - name: run
         id: run
