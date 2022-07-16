@@ -12,7 +12,6 @@ jobs:
         shell: bash
         run: |
           ls ${{github.workspace}}
-          make -C ${{github.workspace}} test
       - name: run
         id: run
         shell: bash
@@ -22,3 +21,5 @@ jobs:
           do
             $x
           done
+
+#make -C ${{github.workspace}} test
