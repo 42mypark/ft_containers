@@ -1,5 +1,7 @@
 #define TITLE(S)                                               \
-  std::cout << std::setfill('*') << std::setw(100) << '\n'     \
+  std::cout << '\n'                                            \
+            << '\n'                                            \
+            << std::setfill('*') << std::setw(100) << '\n'     \
             << std::setfill(' ') << std::setw(50) << S << '\n' \
             << std::setfill('*') << std::setw(100) << '\n'     \
             << std::setfill(' ') << std::endl;
