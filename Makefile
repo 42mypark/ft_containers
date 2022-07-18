@@ -1,17 +1,20 @@
 LIBNAME		=	ftstl
 FILENAME	=	lib$(LIBNAME).a
 
-SRCS			=	test_dependency.cpp
+SRCS				=	$(SRCS_UTILS)
+SRCS_UTILS	=	is_integral.cpp\
+							remove_cv.cpp
+
 OBJS_DIR	=	objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-INCS			= -Isrcs
+INCS			= -Isrcs/utils \
+						-Isrcs/utils/is_integral
 
-TESTS			=	test1.test test2.test
+TESTS			=	is_integral.test
 TEST_DIR	=	test
 
 VPATH			=	$(shell ls -R)
 RM				=	rm -rf
-# DEP		:=	$(OBJS:.o=.d)
 
 all: $(FILENAME)
 
