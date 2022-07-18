@@ -1,13 +1,39 @@
+LIBNAME		=	ftstl
+FILENAME	=	lib$(LIBNAME).a
 
-all:
+SRCS			=	test_dependency.cpp
+OBJS_DIR	=	objs
+OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
+INCS			= -Isrcs
 
-test: test1.out test2.out
+TESTS			=	test1.test test2.test
+TEST_DIR	=	test
+
+VPATH			=	$(shell ls -R)
+RM				=	rm -rf
+# DEP		:=	$(OBJS:.o=.d)
+
+all: $(FILENAME)
+
+$(OBJS_DIR)/%.o : %.cpp
+	$(CXX) -c $< -o $@
+
+$(FILENAME): $(OBJS_DIR) $(OBJS)
+	ar rcs $@ $(filter-out $<, $^)
+
+$(OBJS_DIR):
+	mkdir $@
 
 fclean:
-	rm test*.out
+	$(RM) $(FILENAME)
+	$(RM) $(TESTS)
 
-test1.out:
-	g++ test1.cpp -o $@
+clean:
+	$(RM) $(OBJS_DIR)
 
-test2.out:
-	g++ test2.cpp -o $@
+test: $(FILENAME) $(TESTS)
+
+%.test: $(TEST_DIR)/%_main.cpp
+	$(CXX) $< -L. -l$(LIBNAME) $(INCS) -o $@
+
+

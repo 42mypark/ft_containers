@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: "test"
+    name: "Test"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
@@ -22,7 +22,7 @@ jobs:
         id: run
         shell: bash
         run: |
-          TESTS=(`echo ${{ github.workspace }}/test*.out`)
+          TESTS=(`echo ${{ github.workspace }}/*.test`)
           for x in "${TESTS[@]}"
           do
             $x
