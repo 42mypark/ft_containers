@@ -23,7 +23,7 @@ $(OBJS_DIR):
 
 re: fclean all
 
-fclean:
+fclean: clean
 	$(RM) $(TESTS)
 
 clean:

@@ -3,3 +3,5 @@ objs/
 *.a
 *.test
 **/*.json
+**/*.gch
+*.out
