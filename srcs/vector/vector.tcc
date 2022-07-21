@@ -9,6 +9,7 @@ namespace ft {
 template <typename T, typename Allocator = std::allocator<T> >
 class vector {
  public:
+  // Types
   typedef T                                      value_type;
   typedef Allocator                              allocator_type;
   typedef std::size_t                            size_type;
