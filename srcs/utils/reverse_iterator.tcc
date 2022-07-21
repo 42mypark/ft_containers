@@ -3,6 +3,7 @@
 #include "iterator_traits.tcc"
 
 namespace ft {
+
 template <typename Iter>
 class reverse_iterator {
  protected:
@@ -52,7 +53,7 @@ class reverse_iterator {
   }
   pointer operator->() const {
     Iter tmp = current;
-    return (--tmp);
+    return to_pointer(--tmp);
   }
 
   reference operator[](difference_type n) const {
@@ -98,6 +99,16 @@ class reverse_iterator {
     current += n;
     return *this;
   }
+
+ private:
+  template <typename T>
+  static T* to_pointer(T* p) {
+    return p;
+  }
+  template <typename T>
+  static pointer to_pointer(T t) {
+    return t.operator->();
+  }
 };
 
 // Non-member operators
@@ -114,22 +125,22 @@ bool operator!=(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2
 
 template <typename Iter1, typename Iter2>
 bool operator>(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
-  return lhs.base() > rhs.base();
-}
-
-template <typename Iter1, typename Iter2>
-bool operator>=(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
-  return lhs.base() >= rhs.base();
-}
-
-template <typename Iter1, typename Iter2>
-bool operator<(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
   return lhs.base() < rhs.base();
 }
 
 template <typename Iter1, typename Iter2>
-bool operator<=(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
+bool operator>=(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
   return lhs.base() <= rhs.base();
+}
+
+template <typename Iter1, typename Iter2>
+bool operator<(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
+  return lhs.base() > rhs.base();
+}
+
+template <typename Iter1, typename Iter2>
+bool operator<=(const reverse_iterator<Iter1>& lhs, const reverse_iterator<Iter2>& rhs) {
+  return lhs.base() >= rhs.base();
 }
 
 template <typename Iter>

@@ -21,6 +21,8 @@ $(OBJS_DIR)/%.o : %.cpp
 $(OBJS_DIR):
 	mkdir $@
 
+re: fclean all
+
 fclean:
 	$(RM) $(TESTS)
 
