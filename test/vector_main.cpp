@@ -395,14 +395,14 @@ int main() {
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    std_v.insert(std_v.end(), std_1.end(), std_1.begin());
-    ft_v.insert(ft_v.end(), std_1.end(), std_1.begin());
+    // std_v.insert(std_v.end(), std_1.end(), std_1.begin());
+    // ft_v.insert(ft_v.end(), std_1.end(), std_1.begin());
 
-    ROW("capacity", std_v.capacity(), ft_v.capacity());
-    ROW("size", std_v.size(), ft_v.size());
+    // ROW("capacity", std_v.capacity(), ft_v.capacity());
+    // ROW("size", std_v.size(), ft_v.size());
 
-    print_cont("std", std_v);
-    print_cont("ft ", ft_v);
+    // print_cont("std", std_v);
+    // print_cont("ft ", ft_v);
   }
 
   {
