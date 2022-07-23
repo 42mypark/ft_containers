@@ -8,8 +8,9 @@ INCS			= -Isrcs/utils \
 						-Isrcs/utils/is_integral \
 						-Isrcs/vector
 
-TESTS			=	is_integral.test enable_if.test vector.test #reverse_iterator.test
+TESTS			=	is_integral.test enable_if.test vector.test reverse_iterator.test
 TEST_DIR	=	test
+CXXFLAGS	= -std=c++11 -fsanitize=address -g
 
 VPATH			=	$(shell ls -R)
 RM				=	rm -rf
@@ -17,7 +18,7 @@ RM				=	rm -rf
 all: $(TESTS)
 
 $(OBJS_DIR)/%.o : %.cpp
-	$(CXX) -c $< -o $@
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(OBJS_DIR):
 	mkdir $@
@@ -33,6 +34,6 @@ clean:
 test: $(TESTS)
 
 %.test: $(TEST_DIR)/%_main.cpp
-	$(CXX) $< $(INCS) -o $@
+	$(CXX) $< $(INCS) -o $@ $(CXXFLAGS)
 
 
