@@ -209,6 +209,9 @@ int main() {
 
     SUBTITLE("reverse_iterator");
 
+    *(std_v.rbegin() + 1) = -99;
+    *(ft_v.rbegin() + 1) = -99;
+
     std::cout << "std: ";
     for (std::vector<int>::reverse_iterator ri = std_v.rbegin(); ri != std_v.rend(); ++ri) {
       std::cout << *ri << ' ';
@@ -245,5 +248,421 @@ int main() {
 
     LABEL("std", "ft");
     ROW("max_size", std_v.max_size(), ft_v.max_size());
+  }
+
+  {
+    SUBTITLE("vector.clear()");
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v;
+
+    ft_v.assign(3UL, -3);
+    std_v.assign(3, -3);
+
+    LABEL("std", "ft");
+    ROW("empty", std_v.empty(), ft_v.empty());
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    ft_v.clear();
+    std_v.clear();
+
+    std::cout << '\n';
+
+    ROW("empty", std_v.empty(), ft_v.empty());
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+  }
+
+  {
+    SUBTITLE("vector.insert(pos, value)");
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v;
+
+    LABEL("std", "ft");
+
+    ft_v.insert(ft_v.end(), 2);
+    std_v.insert(std_v.end(), 2);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.end(), 3);
+    std_v.insert(std_v.end(), 3);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin(), 1);
+    std_v.insert(std_v.begin(), 1);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin() + 1, -1);
+    std_v.insert(std_v.begin() + 1, -1);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+  }
+  {
+    SUBTITLE("vector.insert(pos, count, value)");
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v;
+
+    LABEL("std", "ft");
+    ft_v.insert(ft_v.end(), 3UL, 1);
+    std_v.insert(std_v.end(), 3, 1);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin() + 1, 3UL, 2);
+    std_v.insert(std_v.begin() + 1, 3, 2);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin(), 3UL, 3);
+    std_v.insert(std_v.begin(), 3, 3);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+  }
+
+  {
+    SUBTITLE("vector.insert(pos, iter)");
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v;
+
+    std::vector<int> std_1;
+    std::vector<int> std_2;
+    std::vector<int> std_3;
+
+    std_1.assign(3, 1);
+    std_2.assign(3, 2);
+    std_3.assign(3, 3);
+
+    LABEL("std", "ft");
+
+    ft_v.insert(ft_v.end(), std_1.begin(), std_1.end());
+    std_v.insert(std_v.end(), std_1.begin(), std_1.end());
+
+    ft_v.insert(ft_v.end(), std_1.begin(), std_1.end());
+    std_v.insert(std_v.end(), std_1.begin(), std_1.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin() + 1, std_2.begin(), std_2.end());
+    std_v.insert(std_v.begin() + 1, std_2.begin(), std_2.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.insert(ft_v.begin(), std_3.begin(), std_3.end());
+    std_v.insert(std_v.begin(), std_3.begin(), std_3.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.insert(std_v.end(), std_1.end(), std_1.begin());
+    ft_v.insert(ft_v.end(), std_1.end(), std_1.begin());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+  }
+
+  {
+    SUBTITLE("vector.erase(pos)");
+
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+    std_v.push_back(1);
+    std_v.push_back(2);
+    std_v.push_back(3);
+    ft_v.push_back(1);
+    ft_v.push_back(2);
+    ft_v.push_back(3);
+
+    LABEL("std", "ft");
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.erase(std_v.begin() + 1);
+    ft_v.erase(ft_v.begin() + 1);
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.erase(std_v.end() - 1);
+    ft_v.erase(ft_v.end() - 1);
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.erase(std_v.begin());
+    ft_v.erase(ft_v.begin());
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    /* Error Both
+     * ft_v.erase(ft_v.begin());
+     * std_v.erase(std_v.begin());
+     * ROW("capacity", std_v.capacity(), ft_v.capacity());
+     * ROW("size", std_v.size(), ft_v.size());
+     * print_cont("std", std_v);
+     * print_cont("ft ", ft_v);
+     */
+  }
+
+  {
+    SUBTITLE("vector.erase(iter)");
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v;
+
+    std::vector<int> std_1;
+    std::vector<int> std_2;
+    std::vector<int> std_3;
+
+    std_1.assign(3, 1);
+    std_2.assign(3, 2);
+    std_3.assign(3, 3);
+
+    LABEL("std", "ft");
+
+    ft_v.insert(ft_v.end(), std_1.begin(), std_1.end());
+    std_v.insert(std_v.end(), std_1.begin(), std_1.end());
+    ft_v.insert(ft_v.end(), std_1.begin(), std_1.end());
+    std_v.insert(std_v.end(), std_1.begin(), std_1.end());
+    ft_v.insert(ft_v.begin(), std_2.begin(), std_2.end());
+    std_v.insert(std_v.begin(), std_2.begin(), std_2.end());
+    ft_v.insert(ft_v.begin(), std_3.begin(), std_3.end());
+    std_v.insert(std_v.begin(), std_3.begin(), std_3.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.erase(ft_v.begin(), ft_v.begin() + 3);
+    std_v.erase(std_v.begin(), std_v.begin() + 3);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.erase(ft_v.begin() + 3, ft_v.begin() + 6);
+    std_v.erase(std_v.begin() + 3, std_v.begin() + 6);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.erase(ft_v.end() - 3, ft_v.end());
+    std_v.erase(std_v.end() - 3, std_v.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ft_v.erase(ft_v.end() - 3, ft_v.end());
+    std_v.erase(std_v.end() - 3, std_v.end());
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+  }
+
+  {
+    SUBTITLE("vector.pop_back()");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std_v.assign(2, 2);
+    ft_v.assign((size_t)2, 2);
+
+    LABEL("std", "ft");
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.pop_back();
+    ft_v.pop_back();
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.pop_back();
+    ft_v.pop_back();
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    /* Error Both
+// std_v.pop_back();
+// ft_v.pop_back();
+
+// ROW("capacity", std_v.capacity(), ft_v.capacity());
+// ROW("size", std_v.size(), ft_v.size());
+
+// print_cont("std", std_v);
+// print_cont("ft ", ft_v);
+     */
+  }
+
+  {
+    SUBTITLE("vector.resize(count)");
+
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+    std_v.push_back(1);
+    std_v.push_back(2);
+    std_v.push_back(3);
+    ft_v.push_back(1);
+    ft_v.push_back(2);
+    ft_v.push_back(3);
+
+    LABEL("std", "ft");
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.resize(5);
+    ft_v.resize(5);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.resize(2);
+    ft_v.resize(2);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.resize(6, 4);
+    ft_v.resize(6, 4);
+
+    ROW("capacity", std_v.capacity(), ft_v.capacity());
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+  }
+
+  {
+    SUBTITLE("vector.swap(other)");
+
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+    std_v.push_back(1);
+    std_v.push_back(1);
+    std_v.push_back(1);
+    ft_v.push_back(1);
+    ft_v.push_back(1);
+    ft_v.push_back(1);
+    std_v2.assign(5, 2);
+    ft_v2.assign((size_t)5, 2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
+
+    std::cout << '\n';
+
+    ft_v.swap(ft_v2);
+    std_v.swap(std_v2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
+
+    std::cout << '\n';
+
+    ft_v.swap(ft_v2);
+    std_v.swap(std_v2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
   }
 }

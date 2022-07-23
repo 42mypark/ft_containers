@@ -27,6 +27,7 @@ re: fclean all
 
 fclean: clean
 	$(RM) $(TESTS)
+	$(RM) *.dSYM
 
 clean:
 	$(RM) $(OBJS_DIR)

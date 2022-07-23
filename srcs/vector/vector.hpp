@@ -37,9 +37,9 @@ class vector {
       tmp[it - begin_] = *it;
     }
     alloc_.deallocate(begin_, capacity_ - begin_);
-    size_type old_cap = capacity_ - begin_;
+    size_type old_end = end_ - begin_;
     begin_ = tmp;
-    end_ = begin_ + old_cap;
+    end_ = begin_ + old_end;
     capacity_ = begin_ + new_cap;
   }
 
@@ -170,12 +170,14 @@ class vector {
 
   // insert
   iterator insert(iterator pos, const T& value) {
+    int index = pos - begin_;
     if (end_ == capacity_) {
       size_type old_cap = capacity_ - begin_;
       size_type needed = 1;
       size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
       expand(new_cap);
     }
+    pos = begin_ + index;
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + 1) = *it;
     }
@@ -186,36 +188,42 @@ class vector {
   void insert(iterator pos, size_type count, const T& value) {
     if (count == 0)
       return;
+    int index = pos - begin_;
     if (end_ + count > capacity_) {
       size_type old_cap = capacity_ - begin_;
       size_type needed = capacity_ - begin_ + count;
       size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
       expand(new_cap);
     }
+    pos = begin_ + index;
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + count) = *it;
     }
     for (iterator it = pos; it != pos + count; ++it) {
       *it = value;
     }
+    end_ += count;
   }
   template <class InputIt>
   void insert(iterator pos, InputIt first, InputIt last) {  // if last < first?
     size_type count = last - first;
-    if (count == 0)
+    if (count == 0 || last < first)
       return;
+    int index = pos - begin_;
     if (end_ + count > capacity_) {
       size_type old_cap = capacity_ - begin_;
       size_type needed = capacity_ - begin_ + count;
       size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
       expand(new_cap);
     }
+    pos = begin_ + index;
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + count) = *it;
     }
     for (int i = 0; i < count; ++i) {
       *(pos + i) = *(first + i);
     }
+    end_ += count;
   }
 
   // erase
@@ -227,7 +235,7 @@ class vector {
     return pos;
   }
   iterator erase(iterator first, iterator last) {
-    if (first == last)
+    if (first >= last)
       return last;
     int i;
     for (i = 0; last + i != end_; ++i) {
@@ -254,11 +262,12 @@ class vector {
     if (count > old_cap) {
       size_type new_cap = old_cap * 2 > count ? old_cap * 2 : count;
       expand(new_cap);
-    } else {
+    } else if (count < end_ - begin_) {
       end_ = begin_ + count;
     }
     for (int i = end_ - begin_; i < count; ++i) {
       *(begin_ + i) = value;
+      ++end_;
     }
   }
 
@@ -268,6 +277,15 @@ class vector {
     other.insert(other.begin(), begin_, end_);
     clear();
     insert(begin_, tmp.begin(), tmp.end());
+  }
+
+  template <typename Cont>
+  void print_cont(const std::string& tag, Cont c) {
+    std::cout << tag << ": ";
+    for (typename Cont::iterator it = c.begin(); it != c.end(); ++it) {
+      std::cout << *it << ' ';
+    }
+    std::cout << std::endl;
   }
 };
 
