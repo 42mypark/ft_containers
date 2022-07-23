@@ -14,6 +14,12 @@ void print_cont(const std::string& tag, InputIt begin, InputIt end) {
   std::cout << std::endl;
 }
 
+void leakcheck() {
+#ifdef __APPLE__
+  system("leaks vector.test | grep Process");
+#endif
+}
+
 int main() {
   TITLE("vector");
   {
@@ -102,7 +108,7 @@ int main() {
     ROW("capacity", std_v.capacity(), ft_v.capacity());
     print_cont("std", std_v.begin(), std_v.end());
     print_cont("ft ", ft_v.begin(), ft_v.end());
-    system("leaks vector.test | grep Process");
+    leakcheck();
   }
 
   {
