@@ -278,21 +278,26 @@ class vector {
     clear();
     insert(begin_, tmp.begin(), tmp.end());
   }
-
-  template <typename Cont>
-  void print_cont(const std::string& tag, Cont c) {
-    std::cout << tag << ": ";
-    for (typename Cont::iterator it = c.begin(); it != c.end(); ++it) {
-      std::cout << *it << ' ';
-    }
-    std::cout << std::endl;
-  }
 };
 
-// template <typename T, typename Alloc>
-// bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
-// {
-// 	for (ft::vector<T, Alloc>::iterator li = lhs.begin(), ri = rhs.begin();)
-// }
+// Non member function
+
+template <class T, class Alloc>
+void swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs) {
+  lhs.swap(rhs);
+}
+
+template <typename T, typename Alloc>
+bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
+template <typename T, typename Alloc>
+bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
+template <typename T, typename Alloc>
+bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
+template <typename T, typename Alloc>
+bool operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
+template <typename T, typename Alloc>
+bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
+template <typename T, typename Alloc>
+bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {}
 
 }  // namespace ft
