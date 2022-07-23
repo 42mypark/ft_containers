@@ -19,7 +19,7 @@ class vector {
   typedef const T&                               const_reference;
   typedef typename allocator_type::pointer       pointer;
   typedef typename allocator_type::const_pointer const_pointer;
-  typedef pointer                                iterator;
+  typedef pointer                                iterator;  // ?
   typedef const_pointer                          const_iterator;
   typedef ft::reverse_iterator<iterator>         reverse_iterator;
   typedef ft::reverse_iterator<const_iterator>   const_reverse_iterator;
@@ -141,10 +141,10 @@ class vector {
   const_iterator         begin() const { return begin_; }
   iterator               end() { return end_; }
   const_iterator         end() const { return end_; }
-  reverse_iterator       rbegin() { return end_ - 1; }
-  const_reverse_iterator rbegin() const { return end_ - 1; }
-  reverse_iterator       rend() { return begin_ - 1; }
-  const_reverse_iterator rend() const { return begin_ - 1; }
+  reverse_iterator       rbegin() { return static_cast<reverse_iterator>(end_); }
+  const_reverse_iterator rbegin() const { return static_cast<const_reverse_iterator>(end_); }
+  reverse_iterator       rend() { return static_cast<reverse_iterator>(begin_); }
+  const_reverse_iterator rend() const { return static_cast<const_reverse_iterator>(begin_); }
 
   // Capacity
   bool      empty() const { return end_ == begin_; }
@@ -171,7 +171,10 @@ class vector {
   // insert
   iterator insert(iterator pos, const T& value) {
     if (end_ == capacity_) {
-      expand((capacity_ - begin_) * 2);
+      size_type old_cap = capacity_ - begin_;
+      size_type needed = 1;
+      size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
+      expand(new_cap);
     }
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + 1) = *it;
@@ -187,7 +190,7 @@ class vector {
       size_type old_cap = capacity_ - begin_;
       size_type needed = capacity_ - begin_ + count;
       size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
-      expand(needed);
+      expand(new_cap);
     }
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + count) = *it;
@@ -205,7 +208,7 @@ class vector {
       size_type old_cap = capacity_ - begin_;
       size_type needed = capacity_ - begin_ + count;
       size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
-      expand(needed);
+      expand(new_cap);
     }
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + count) = *it;
@@ -236,7 +239,10 @@ class vector {
 
   void push_back(const T& value) {
     if (end_ == capacity_) {
-      expand((capacity_ - begin_) * 2);
+      size_type old_cap = capacity_ - begin_;
+      size_type needed = 1;
+      size_type new_cap = old_cap * 2 > needed ? old_cap * 2 : needed;
+      expand(new_cap);
     }
     *end_ = value;
     ++end_;

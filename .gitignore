@@ -5,3 +5,4 @@ objs/
 **/*.json
 **/*.gch
 *.out
+*.dSYM

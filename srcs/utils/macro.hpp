@@ -22,20 +22,19 @@
 #define ROW(CATEGORY, X, Y)                                                                       \
   std::cout << std::setw(15) << CATEGORY << std::setw(3) << "||" << std::setw(10) << X            \
             << std::setw(10) << "|" << std::setw(10) << Y << std::setw(10) << "|" << std::setw(3) \
-            << (X == Y ? "O" : "X") << std::endl;                                                 \
-  assert(X == Y);
+            << (X == Y ? "O" : "X") << std::endl;
 
 #define TRYROW(CATEGORY, X, Y)                                                     \
   std::cout << std::setw(15) << CATEGORY << std::setw(3) << "||" << std::setw(10); \
   try {                                                                            \
     X;                                                                             \
   } catch (std::exception & e) {                                                   \
-    std::cout << "throw" << std::endl;                                             \
+    std::cout << "throw";                                                          \
   }                                                                                \
   std::cout << std::setw(10) << "|" << std::setw(10);                              \
   try {                                                                            \
     Y;                                                                             \
   } catch (std::exception & e) {                                                   \
-    std::cout << "throw" << std::endl;                                             \
+    std::cout << "throw";                                                          \
   }                                                                                \
   std::cout << std::setw(10) << "|" << std::setw(3) << std::endl;

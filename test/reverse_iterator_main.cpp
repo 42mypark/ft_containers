@@ -55,7 +55,12 @@ int main() {
     ROW("op[-2]", std_r[-2], ft_r[-2]);
     std::cout << "~ end ~" << std::endl;
 
-    std::vector<int>                                  v{0, 1, 2, 3, 4};
+    std::vector<int> v;
+    v.push_back(0);
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+    v.push_back(4);
     std::reverse_iterator<std::vector<int>::iterator> rv = v.rbegin();
     ft::reverse_iterator<std::vector<int>::iterator>  fv = v.rbegin();
     ROW("op++", *(++rv), *(++fv));
@@ -70,35 +75,36 @@ int main() {
   }
 
   {
-    SUBTITLE("NON MEMBER FUNCTION");
-    LABEL("std", "ft");
-    int a[]{0, 1, 2, 3};
-    //             ↑  └───── x, y
-    //             └──────── z
+    // SUBTITLE("NON MEMBER FUNCTION");
+    // LABEL("std", "ft");
+    // int a[]{0, 1, 2, 3};
+    // //             ↑  └───── x, y
+    // //             └──────── z
 
-    std::reverse_iterator<int *> x{std::rbegin(a)}, y{std::rbegin(a)}, z{std::rbegin(a) + 1};
-    ft::reverse_iterator<int *>  fx{std::rbegin(a)}, fy{std::rbegin(a)}, fz{std::rbegin(a) + 1};
+    // std::reverse_iterator<int *> x = std::rbegin(a), y = std::rbegin(a), z = std::rbegin(a) + 1;
+    // ft::reverse_iterator<int *>  fx = std::rbegin(a), fy = std::rbegin(a), fz = std::rbegin(a) +
+    // 1;
 
-    std::cout << std::boolalpha;
-    ROW("op==", (x == y), (fx == fy));
-    ROW("op!=", (x != y), (fx != fy));
-    ROW("op< ", (x < y), (fx < fy));
-    ROW("op<=", (x <= y), (fx <= fy));
-    ROW("op==", (x == z), (fx == fz));
-    ROW("op!=", (x != z), (fx != fz));
-    ROW("op< ", (x < z), (fx < fz));
-    ROW("op<=", (x <= z), (fx <= fz));
+    // std::cout << std::boolalpha;
+    // ROW("op==", (x == y), (fx == fy));
+    // ROW("op!=", (x != y), (fx != fy));
+    // ROW("op< ", (x < y), (fx < fy));
+    // ROW("op<=", (x <= y), (fx <= fy));
+    // ROW("op==", (x == z), (fx == fz));
+    // ROW("op!=", (x != z), (fx != fz));
+    // ROW("op< ", (x < z), (fx < fz));
+    // ROW("op<=", (x <= z), (fx <= fz));
 
-    std::vector<int>                                  v{0, 1, 2, 3};
-    std::reverse_iterator<std::vector<int>::iterator> ri1 = v.rbegin();
-    ft::reverse_iterator<std::vector<int>::iterator>  fi1 = v.rbegin();
-    std::reverse_iterator<std::vector<int>::iterator> ri2{2 + ri1};
-    ft::reverse_iterator<std::vector<int>::iterator>  fi2{2 + fi1};
-    ROW("op+ ", *ri2, *fi2);
+    // std::vector<int>                                  v{0, 1, 2, 3};
+    // std::reverse_iterator<std::vector<int>::iterator> ri1 = v.rbegin();
+    // ft::reverse_iterator<std::vector<int>::iterator>  fi1 = v.rbegin();
+    // std::reverse_iterator<std::vector<int>::iterator> ri2{2 + ri1};
+    // ft::reverse_iterator<std::vector<int>::iterator>  fi2{2 + fi1};
+    // ROW("op+ ", *ri2, *fi2);
 
-    std::reverse_iterator<std::vector<int>::iterator> ri3 = v.rbegin(), ri4 = v.rend();
-    ft::reverse_iterator<std::vector<int>::iterator>  fi3 = v.rbegin(), fi4 = v.rend();
-    ROW("op- ", (ri4 - ri3), (fi4 - fi3));
-    ROW("op- ", (ri3 - ri4), (fi3 - fi4));
+    // std::reverse_iterator<std::vector<int>::iterator> ri3 = v.rbegin(), ri4 = v.rend();
+    // ft::reverse_iterator<std::vector<int>::iterator>  fi3 = v.rbegin(), fi4 = v.rend();
+    // ROW("op- ", (ri4 - ri3), (fi4 - fi3));
+    // ROW("op- ", (ri3 - ri4), (fi3 - fi4));
   }
 }
