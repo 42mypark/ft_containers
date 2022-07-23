@@ -5,9 +5,10 @@ SRCS_UTILS	=	is_integral.cpp\
 OBJS_DIR	=	objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 INCS			= -Isrcs/utils \
-						-Isrcs/utils/is_integral
+						-Isrcs/utils/is_integral \
+						-Isrcs/vector
 
-TESTS			=	is_integral.test enable_if.test reverse_iterator.test
+TESTS			=	is_integral.test enable_if.test vector.test #reverse_iterator.test
 TEST_DIR	=	test
 
 VPATH			=	$(shell ls -R)

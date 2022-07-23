@@ -4,6 +4,5 @@ BasedOnStyle: Google
 AlignConsecutiveDeclarations: true
 AllowShortLoopsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: false
 ColumnLimit: 100
 ---
