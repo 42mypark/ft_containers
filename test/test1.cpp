@@ -1,127 +1,112 @@
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <vector>
 
-// #include "vector.hpp"
+template <typename Cont>
+void print_cont(const std::string& tag, Cont c) {
+  std::cout << tag << ": ";
+  for (typename Cont::iterator it = c.begin(); it != c.end(); ++it) {
+    std::cout << *it << ' ';
+  }
+  std::cout << std::endl;
+}
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <vector>
+
+// int main() {
+//   std::vector<int> v1{1, 2, 3, 4};
+//   std::vector<int> v2{1, 2, 3, 4};
+
+//   std::mt19937 g{std::random_device{}()};
+//   while (!std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end())) {
+//     for (auto c : v1)
+//       std::cout << c << ' ';
+//     std::cout << ">= ";
+//     for (auto c : v2)
+//       std::cout << c << ' ';
+//     std::cout << '\n';
+
+//     std::shuffle(v1.begin(), v1.end(), g);
+//     std::shuffle(v2.begin(), v2.end(), g);
+//   }
+
+//   for (auto c : v1)
+//     std::cout << c << ' ';
+//   std::cout << "< ";
+//   for (auto c : v2)
+//     std::cout << c << ' ';
+//   std::cout << '\n';
+// }
+
+template <typename T>
+class Comp {
+ public:
+  bool operator()(const T& o1, const T& o2) {
+    std::cout << "o1 : " << o1 << std::endl;
+    std::cout << "o2 : " << o2 << std::endl;
+    return o1 > o2;
+  }
+};
+
+// bool cmp(int& a, int& b) {
+//   std::cout << "o1 : " << a << std::endl;
+//   std::cout << "o2 : " << b << std::endl;
+//   return (a >= b);
+// }
 
 int main() {
-  // {
-  //   int              sz = 100;
-  //   std::vector<int> v(3);
-
-  //   auto cap = v.capacity();
-  //   std::cout << "Initial size: " << v.size() << ", capacity: " << cap << '\n';
-
-  //   std::cout << "\nDemonstrate the capacity's growth policy."
-  //                "\nSize:  Capacity:  Ratio:\n"
-  //             << std::left;
-  //   while (sz-- > 0) {
-  //     v.push_back(sz);
-  //     if (cap != v.capacity()) {
-  //       std::cout << std::setw(7) << v.size() << std::setw(11) << v.capacity() << std::setw(10)
-  //                 << v.capacity() / static_cast<float>(cap) << '\n';
-  //       cap = v.capacity();
-  //     }
-  //   }
-
-  //   std::cout << "\nFinal size: " << v.size() << ", capacity: " << v.capacity() << '\n';
-  // }
-
-  // {
-  // 	std::vector<int> v1;
-  // 	std::vector<int> v2;
-
-  // 	v1.push_back(1);
-  // 	v1.push_back(2);
-
-  // 	v2.push_back(3);
-  // 	v2.push_back(2);
-  // 	v2.push_back(1);
-
-  // 	v1 = v2;
-
-  // 	std::cout << 	v1.capacity() << std::endl;
-  // 	std::cout <<  v2.capacity() << std::endl;
-  // 	// for (std::vector<int>::iterator it = v1.begin(); it != v1.end(); ++it)
-  // 	// {
-  // 	// 	std::cout << *it << std::endl;
-  // 	// }
-
-  // }
-
-  // {
-  //   std::vector<int> v;
-  //   v.assign(3, 3);
-  //   std::cout << v.capacity() << std::endl;
-  //   std::cout << v[-1] << std::endl;
-  //   std::cout << v[111] << std::endl;
-  // }
-  // {
-  //   std::vector<int> c;
-  //   c.push_back(1);
-  //   c.push_back(2);
-  //   c.push_back(3);
-  //   c.push_back(4);
-  //   c.push_back(5);
-  //   c.push_back(6);
-  //   std::cout << *(c.erase(c.end() - 4, c.end() - 2)) << std::endl;
-  //   for (auto it = c.begin(); it != c.end(); ++it) {
-  //     std::cout << *it << ' ';
-  //   }
-  // }
-  // {
-  //   ft::vector<int> c;
-  //   c.push_back(1);
-  //   c.push_back(2);
-  //   c.push_back(3);
-  //   c.push_back(4);
-  //   c.push_back(5);
-  //   c.push_back(6);
-  //   // std::cout << *(c.begin() + 1) << std::endl;
-  //   // std::cout << *(c.erase(c.end() - 1)) << std::endl;
-  // }
-
-  // {
-  //   std::vector<int> c;
-  //   c.push_back(1);
-  //   c.push_back(2);
-  //   c.push_back(3);
-  //   c.push_back(4);
-  //   c.push_back(5);
-  //   c.push_back(6);
-  //   for (auto it = c.begin(); it != c.end(); ++it) {
-  //     std::cout << *it << ' ';
-  //   }
-  //   std::cout << '\n' <<  *(c.insert(c.begin() + 2, 7)) << std::endl;
-
-  //   for (auto it = c.begin(); it != c.end(); ++it) {
-  //     std::cout << *it << ' ';
-  //   }
-  // }
-
-  // {
-  //   std::vector<int> c;
-  //   c.push_back(1);
-  //   c.push_back(2);
-  //   std::cout << c.capacity() << std::endl;
-  //   c.insert(c.begin() + 1, 1, -1);
-  //   std::cout << c.capacity() << std::endl;
-  //   for (auto it = c.begin(); it != c.end(); ++it) {
-  //     std::cout << *it << ' ';
-  //   }
-  // }
-
   {
-    std::vector<int> c;
-    c.push_back(1);
-    c.push_back(2);
-    c.push_back(3);
-    std::cout << c.capacity() << std::endl;
-    c.resize(5, 0);
-    std::cout << c.capacity() << std::endl;
-    for (auto it = c.begin(); it != c.end(); ++it) {
-      std::cout << *it << ' ';
-    }
+    std::vector<int> v1;
+    std::vector<int> v2;
+    Comp<int>        c;
+
+    v1.assign(3, 2);
+    v2.assign(3, 2);
+    v1.push_back(2);
+    v2.push_back(3);
+
+    print_cont("v1", v1);
+    print_cont("v2", v2);
+
+    bool res1 = std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+
+    std::cout << res1 << std::endl;
+
+    bool res2 = std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end(), c);
+
+    std::cout << res2 << std::endl;
+  }
+  {
+    std::vector<int> v1;
+    std::vector<int> v2;
+
+    v1.assign(3, 3);
+    v2.assign(3, 2);
+
+    print_cont("v1", v1);
+    print_cont("v2", v2);
+
+    bool res = std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+
+    std::cout << res << std::endl;
+  }
+  {
+    std::vector<int> v1;
+    std::vector<int> v2;
+
+    v1.assign(3, 2);
+    v2.assign(3, 3);
+
+    print_cont("v1", v1);
+    print_cont("v2", v2);
+
+    bool res = std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
+
+    std::cout << res << std::endl;
   }
 }
