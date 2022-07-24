@@ -8,7 +8,7 @@ INCS			= -Isrcs/utils \
 						-Isrcs/utils/is_integral \
 						-Isrcs/vector
 
-TESTS			=	is_integral.test enable_if.test vector.test reverse_iterator.test
+TESTS			=	is_integral.test enable_if.test vector.test reverse_iterator.test lexicographical_compare.test
 TEST_DIR	=	test
 CXXFLAGS	= -std=c++11 -fsanitize=address -g
 
