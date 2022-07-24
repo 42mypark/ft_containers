@@ -290,23 +290,21 @@ void swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs) {
 
 template <typename T, typename Alloc>
 bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  typename ft::vector<T, Alloc>::iterator li = lhs.begin();
-  typename ft::vector<T, Alloc>::iterator ri = rhs.begin();
+  typename ft::vector<T>::iterator li = const_cast<typename ft::vector<T>::iterator>(lhs.begin());
+  typename ft::vector<T>::iterator ri = const_cast<typename ft::vector<T>::iterator>(rhs.begin());
   for (; li != lhs.end() && ri != rhs.end(); ++li, ++ri) {
-    if (*li != ri)
+    if (*li != *ri)
       return false;
   }
   return li == lhs.end() && ri == rhs.end();
 }
 template <typename T, typename Alloc>
 bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  typename ft::vector<T, Alloc>::iterator li = lhs.begin();
-  typename ft::vector<T, Alloc>::iterator ri = rhs.begin();
-  for (; li != lhs.end() && ri != rhs.end(); ++li, ++ri) {
-    if (*li == ri)
-      return false;
-  }
-  return !(li == lhs.end() && ri == rhs.end());
+  typename ft::vector<T, Alloc>::iterator li =
+      const_cast<typename ft::vector<T>::iterator>(lhs.begin());
+  typename ft::vector<T, Alloc>::iterator ri =
+      const_cast<typename ft::vector<T>::iterator>(rhs.begin());
+  return !(lhs == rhs);
 }
 
 template <typename T, typename Alloc>
@@ -315,18 +313,15 @@ bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
 }
 template <typename T, typename Alloc>
 bool operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  ft::LessEqual<T> le;
-  return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), le);
+  return !(rhs < lhs);
 }
 template <typename T, typename Alloc>
 bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  ft::Grater<T> g;
-  return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), g);
+  return rhs < lhs;
 }
 template <typename T, typename Alloc>
 bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  ft::GraterEqual<T> ge;
-  return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), ge);
+  return !(lhs < rhs);
 }
 
 }  // namespace ft

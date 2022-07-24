@@ -576,8 +576,6 @@ int main() {
     std::vector<int> std_v;
     ft::vector<int>  ft_v;
 
-    std::vector<int> std_v2;
-    ft::vector<int>  ft_v2;
     std_v.push_back(1);
     std_v.push_back(2);
     std_v.push_back(3);
@@ -664,5 +662,195 @@ int main() {
 
     print_cont("ft  ", ft_v);
     print_cont("ft2 ", ft_v2);
+  }
+
+  {
+    SUBTITLE("ft::swap");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+    std_v.push_back(1);
+    std_v.push_back(1);
+    std_v.push_back(1);
+    ft_v.push_back(1);
+    ft_v.push_back(1);
+    ft_v.push_back(1);
+    std_v2.assign(5, 2);
+    ft_v2.assign((size_t)5, 2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
+
+    std::cout << '\n';
+
+    ft::swap(ft_v, ft_v2);
+    std::swap(std_v, std_v2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
+
+    std::cout << '\n';
+
+    ft::swap(ft_v, ft_v2);
+    std::swap(std_v, std_v2);
+
+    print_cont("std ", std_v);
+    print_cont("std2", std_v2);
+
+    print_cont("ft  ", ft_v);
+    print_cont("ft2 ", ft_v2);
+  }
+
+  {
+    SUBTITLE("operator==(eq)");
+
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std_v.push_back(1);
+    std_v.push_back(2);
+    std_v.push_back(3);
+    ft_v.push_back(1);
+    ft_v.push_back(2);
+    ft_v.push_back(3);
+
+    std::vector<int> std_v2(std_v);
+    ft::vector<int>  ft_v2(ft_v);
+
+    LABEL("std", "ft");
+    ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+    std_v.pop_back();
+    ft_v.pop_back();
+    ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+  }
+  {
+    SUBTITLE("operator!=(nq)");
+
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+
+    std_v.push_back(1);
+    std_v.push_back(2);
+    std_v.push_back(3);
+    ft_v.push_back(1);
+    ft_v.push_back(2);
+    ft_v.push_back(3);
+
+    std::vector<int> std_v2(std_v);
+    ft::vector<int>  ft_v2(ft_v);
+
+    LABEL("std", "ft");
+    ROW("not equal", (std_v != std_v2), (ft_v != ft_v2));
+    std_v.pop_back();
+    ft_v.pop_back();
+    ROW("not equal", (std_v != std_v2), (ft_v != ft_v2));
+  }
+  {
+    SUBTITLE("operator<(l)");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+
+    LABEL("std", "ft");
+    ROW("less", (std_v < std_v2), (ft_v < ft_v2));
+
+    ft_v2.push_back(1);
+    std_v2.push_back(1);
+
+    ROW("less", (std_v < std_v2), (ft_v < ft_v2));
+
+    ft_v.push_back(2);
+    std_v.push_back(2);
+
+    ROW("less", (std_v < std_v2), (ft_v < ft_v2));
+
+    ft_v2.push_back(3);
+    std_v2.push_back(3);
+
+    ROW("less", (std_v < std_v2), (ft_v < ft_v2));
+  }
+  {
+    SUBTITLE("operator<=(le)");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+
+    LABEL("std", "ft");
+    ROW("less equal", (std_v <= std_v2), (ft_v <= ft_v2));
+
+    ft_v2.push_back(1);
+    std_v2.push_back(1);
+
+    ROW("less equal", (std_v <= std_v2), (ft_v <= ft_v2));
+
+    ft_v.push_back(2);
+    std_v.push_back(2);
+
+    ROW("less equal", (std_v <= std_v2), (ft_v <= ft_v2));
+
+    ft_v2.push_back(3);
+    std_v2.push_back(3);
+
+    ROW("less equal", (std_v <= std_v2), (ft_v <= ft_v2));
+  }
+  {
+    SUBTITLE("operator>(g)");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+
+    LABEL("std", "ft");
+    ROW("grater", (std_v > std_v2), (ft_v > ft_v2));
+
+    ft_v2.push_back(1);
+    std_v2.push_back(1);
+
+    ROW("grater", (std_v > std_v2), (ft_v > ft_v2));
+
+    ft_v.push_back(2);
+    std_v.push_back(2);
+
+    ROW("grater", (std_v > std_v2), (ft_v > ft_v2));
+
+    ft_v2.push_back(3);
+    std_v2.push_back(3);
+
+    ROW("grater", (std_v > std_v2), (ft_v > ft_v2));
+  }
+  {
+    SUBTITLE("operator>=(ge)");
+    std::vector<int> std_v;
+    ft::vector<int>  ft_v;
+    std::vector<int> std_v2;
+    ft::vector<int>  ft_v2;
+
+    LABEL("std", "ft");
+    ROW("grater equal", (std_v >= std_v2), (ft_v >= ft_v2));
+
+    ft_v2.push_back(1);
+    std_v2.push_back(1);
+
+    ROW("grater equal", (std_v >= std_v2), (ft_v >= ft_v2));
+
+    ft_v.push_back(2);
+    std_v.push_back(2);
+
+    ROW("grater equal", (std_v >= std_v2), (ft_v >= ft_v2));
+
+    ft_v2.push_back(3);
+    std_v2.push_back(3);
+
+    ROW("grater equal", (std_v >= std_v2), (ft_v >= ft_v2));
   }
 }

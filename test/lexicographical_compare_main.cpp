@@ -42,8 +42,8 @@ int main() {
         std::cout << *c << ' ';
       std::cout << '\n';
 
-      std::random_shuffle(v1.begin(), v1.end(), RNG());
-      std::random_shuffle(v2.begin(), v2.end(), RNG());
+      std::random_shuffle(v1.begin(), v1.end());
+      std::random_shuffle(v2.begin(), v2.end());
     }
     for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
       std::cout << *c << ' ';
@@ -67,8 +67,8 @@ int main() {
         std::cout << *c << ' ';
       std::cout << '\n';
 
-      std::random_shuffle(v1.begin(), v1.end(), RNG());
-      std::random_shuffle(v2.begin(), v2.end(), RNG());
+      std::random_shuffle(v1.begin(), v1.end());
+      std::random_shuffle(v2.begin(), v2.end());
     }
     for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
       std::cout << *c << ' ';
@@ -83,8 +83,8 @@ int main() {
     std::vector<int>     v2(v1);
     ft::GraterEqual<int> ge;
 
-    std::random_shuffle(v1.begin(), v1.end(), RNG());
-    std::random_shuffle(v2.begin(), v2.end(), RNG());
+    std::random_shuffle(v1.begin(), v1.end());
+    std::random_shuffle(v2.begin(), v2.end());
     while (!ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end(), ge)) {
       for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
         std::cout << *c << ' ';
@@ -93,8 +93,8 @@ int main() {
         std::cout << *c << ' ';
       std::cout << '\n';
 
-      std::random_shuffle(v1.begin(), v1.end(), RNG());
-      std::random_shuffle(v2.begin(), v2.end(), RNG());
+      std::random_shuffle(v1.begin(), v1.end());
+      std::random_shuffle(v2.begin(), v2.end());
     }
     for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
       std::cout << *c << ' ';
@@ -109,8 +109,8 @@ int main() {
     std::vector<int>   v2(v1);
     ft::LessEqual<int> le;
 
-    std::random_shuffle(v1.begin(), v1.end(), RNG());
-    std::random_shuffle(v2.begin(), v2.end(), RNG());
+    std::random_shuffle(v1.begin(), v1.end());
+    std::random_shuffle(v2.begin(), v2.end());
     while (!ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end(), le)) {
       for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
         std::cout << *c << ' ';
@@ -119,8 +119,8 @@ int main() {
         std::cout << *c << ' ';
       std::cout << '\n';
 
-      std::random_shuffle(v1.begin(), v1.end(), RNG());
-      std::random_shuffle(v2.begin(), v2.end(), RNG());
+      std::random_shuffle(v1.begin(), v1.end());
+      std::random_shuffle(v2.begin(), v2.end());
     }
     for (std::vector<int>::iterator c = v1.begin(); c != v1.end(); ++c)
       std::cout << *c << ' ';

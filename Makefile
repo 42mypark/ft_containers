@@ -8,9 +8,9 @@ INCS			= -Isrcs/utils \
 						-Isrcs/utils/is_integral \
 						-Isrcs/vector
 
-TESTS			=	is_integral.test enable_if.test vector.test reverse_iterator.test lexicographical_compare.test
+TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test #reverse_iterator.test
 TEST_DIR	=	test
-CXXFLAGS	= -std=c++11 -fsanitize=address -g
+CXXFLAGS	= -std=c++98 -fsanitize=address -g
 
 VPATH			=	$(shell ls -R)
 RM				=	rm -rf
