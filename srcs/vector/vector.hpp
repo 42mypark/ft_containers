@@ -290,8 +290,8 @@ void swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs) {
 
 template <typename T, typename Alloc>
 bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  ft::vector<T, Alloc>::iterator li = lhs.begin();
-  ft::vector<T, Alloc>::iterator ri = rhs.begin();
+  typename ft::vector<T, Alloc>::iterator li = lhs.begin();
+  typename ft::vector<T, Alloc>::iterator ri = rhs.begin();
   for (; li != lhs.end() && ri != rhs.end(); ++li, ++ri) {
     if (*li != ri)
       return false;
@@ -300,8 +300,8 @@ bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs
 }
 template <typename T, typename Alloc>
 bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  ft::vector<T, Alloc>::iterator li = lhs.begin();
-  ft::vector<T, Alloc>::iterator ri = rhs.begin();
+  typename ft::vector<T, Alloc>::iterator li = lhs.begin();
+  typename ft::vector<T, Alloc>::iterator ri = rhs.begin();
   for (; li != lhs.end() && ri != rhs.end(); ++li, ++ri) {
     if (*li == ri)
       return false;
