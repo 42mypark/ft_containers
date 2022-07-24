@@ -10,7 +10,14 @@ INCS			= -Isrcs/utils \
 
 TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test #reverse_iterator.test
 TEST_DIR	=	test
-CXXFLAGS	= -std=c++98 -fsanitize=address -g
+CXXFLAGS	= -fsanitize=address -g
+ifeq ($(shell uname), Darwin)
+	CXXFLAGS += -std=c++98
+endif
+ifeq ($(shell uname), Linux)
+	CXXFLAGS += -std=c++11
+endif
+
 
 VPATH			=	$(shell ls -R)
 RM				=	rm -rf
