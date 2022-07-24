@@ -18,7 +18,6 @@ ifeq ($(shell uname), Linux)
 	CXXFLAGS += -std=c++11
 endif
 
-
 VPATH			=	$(shell ls -R)
 RM				=	rm -rf
 
@@ -35,6 +34,8 @@ re: fclean all
 fclean: clean
 	$(RM) $(TESTS)
 	$(RM) *.dSYM
+	$(RM) *.out
+	$(RM) *.test
 
 clean:
 	$(RM) $(OBJS_DIR)
