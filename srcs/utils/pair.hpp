@@ -16,6 +16,7 @@ struct pair {
   pair& operator=(const pair& other) {
     first = other.first;
     second = other.second;
+    return *this;
   }
 };
 
