@@ -4,25 +4,25 @@ namespace ft {
 
 enum NodeColor { BLACK, RED };
 
-template <typename Pair>
+template <typename Key, typename Value>
 struct rbtreeNode {
-  typedef Pair                            pair_type;
-  typedef typename pair_type::first_type  key;
-  typedef typename pair_type::second_type value;
-  typedef enum NodeColor                  color_;
-  typedef rbtreeNode*                     pointer;
+  typedef Key            key;
+  typedef Value          value;
+  typedef enum NodeColor color;
+  typedef rbtreeNode*    pointer;
+  typedef rbtreeNode&    reference;
 
-  static const rbtreeNode nil(pair_type(), BLACK);
+  static const rbtreeNode nil(value(), BLACK);
 
   key     key_;
   value   value_;
-  color_  color_;
+  color   color_;
   pointer left_, right_, parent_;
 
   ~rbtreeNode() {}
-  rbtreeNode(const pair_type& p)
+  rbtreeNode(const value& p)
       : key_(p.frist), value_(p.second), color_(RED), left_(&nil), right_(&nil), parent_(&nil) {}
-  rbtreeNode(const pair_type& p, color_ c)
+  rbtreeNode(const value& p, color c)
       : key_(p.frist), value_(p.second), color_(c), left_(&nil), right_(&nil), parent_(&nil) {}
   rbtreeNode(const rbtreeNode& node)
       : key_(node.key_),
@@ -33,47 +33,44 @@ struct rbtreeNode {
         parent_(node.parent_) {}
 };
 
-template <typename Pair, typename Compare, typename Allocator>
+template <typename Key, typename Value, typename Compare, typename Allocator>
 class rbtree {
-  typedef Pair                                    pair_type;
-  typedef typename pair_type::first_type          key;
-  typedef typename pair_type::second_type         value;
-  typedef typename rbtreeNode<pair_type>          node;
-  typedef typename rbtreeNode<pair_type>::pointer node_pointer;
+  typedef Key                                                           key;
+  typedef Value                                                         value;
+  typedef typename rbtreeNode<key, value>                               node;
+  typedef typename rbtreeNode<key, value>::pointer                      node_pointer;
+  typedef typename rbtreeNode<key, value>::reference                    node_reference;
+  typedef typename Allocator::template rebind<struct rbtreeNode>::other node_allocator;
 
   const Compare comp_;
   node_pointer  root_;
 
  private:
-  bool isRed(node_pointer np) {
-    if (np->color_ == RED)
-      return true;
-    return false;
-  }
-  void colorFlip(node_pointer np) {
-    np->color_ = !np->color_;
-    np->left_->color_ = !np->left_->color_;
-    np->right_->color_ = !np->right_->color_;
+  bool isRed(node_pointer n) { return n->color_ == RED; }
+  void colorFlip(node_pointer n) {
+    n->color_ = !n->color_;
+    n->left_->color_ = !n->left_->color_;
+    n->right_->color_ = !n->right_->color_;
   }
   node_pointer rotateLeft(node_pointer np) {
-    node_pointer x = np->right_;
-    x->parent_ = np->parent_;
-    np->parent_ = x;
-    np->right_ = x->left_;
-    x->left_ = np;
-    x->color_ = np->color_;
+    node_pointer nr = np->right_;
+    nr->parent_ = np->parent_;
+    np->parent_ = nr;
+    np->right_ = nr->left_;
+    nr->left_ = np;
+    nr->color_ = np->color_;
     np->color_ = RED;
-    return x;
+    return nr;
   }
   node_pointer rotateRight(node_pointer np) {
-    node_pointer x = np->left_;
-    x->parent_ = np->parent_;
-    np->parent_ = x;
-    np->left_ = x->right_;
-    x->right_ = np;
-    x->color_ = np->color_;
+    node_pointer nl = np->left_;
+    nl->parent_ = np->parent_;
+    np->parent_ = nl;
+    np->left_ = nl->right_;
+    nl->right_ = np;
+    nl->color_ = np->color_;
     np->color_ = RED;
-    return x;
+    return nl;
   }
   node_pointer fixUp(node_pointer np) {
     if (isRed(np->left_) && isRed(np->left_->right_))
@@ -86,7 +83,7 @@ class rbtree {
       colorFlip(np);
     return np;
   }
-  node_pointer insert(node_pointer np, const pair_type& p) {
+  node_pointer insert(node_pointer np, const value& p) {
     if (np == &node::nil)
       return new rbtreeNode(p);
     if (comp_(np->key_, p.first)) {

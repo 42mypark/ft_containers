@@ -25,7 +25,7 @@ class map {
   // typedef ft::tree_const_iterator<value_type>    const_iterator;
   // typedef ft::reverse_iterator<iterator>         reverse_iterator;
   // typedef ft::reverse_iterator<const_iterator>   const_reverse_iterator;
-  typedef rbtree<value_type, Compare, allocator_type> Tree;
+  typedef rbtree<key_type, value_type, Compare, allocator_type> Tree;
 
   Tree tree_;
 };
