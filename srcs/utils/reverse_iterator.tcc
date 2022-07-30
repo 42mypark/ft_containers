@@ -19,6 +19,7 @@ class reverse_iterator {
   typedef typename iterator_traits<Iter>::reference         reference;
 
   // Constructor
+  ~reverse_iterator() {}
   reverse_iterator() {}
   explicit reverse_iterator(iterator_type it) : current_(it) {}
   template <typename U>

@@ -111,12 +111,24 @@ void print_cont(const std::string& tag, Cont c) {
 //   }
 // }
 
+#include <map>
 #include <memory>
 
 int main() {
-  std::less<int> c;
+  std::map<int, int> m;
+  std::map<int, int> m2;
 
-  std::cout << c(1, 2) << std::endl;
-  std::cout << c(2, 2) << std::endl;
-  std::cout << c(3, 2) << std::endl;
+  m.insert(std::make_pair(1, 1));
+  m.insert(std::make_pair(2, 2));
+
+  std::map<int, int>::iterator it = m.begin();
+  std::map<int, int>::iterator it2 = m.begin();
+  std::map<int, int>::iterator it3 = m2.begin();
+
+  std::cout << it->first << std::endl;
+  std::cout << it->second << std::endl;
+
+  std::cout << (it++)->first << std::endl;
+  std::cout << it->second << std::endl;
+  std::cout << typeid(*it).name() << std::endl;
 }

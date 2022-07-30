@@ -7,6 +7,7 @@ struct pair {
   first_type  first;
   second_type second;
 
+  ~pair() {}
   pair() : first(T1()), second(T2()) {}
   pair(const T1& x, const T2& y) : first(x), second(y) {}
   pair(const pair& p) : first(p.first), second(p.second) {}
