@@ -93,9 +93,7 @@ class map {
   // Capacity
   bool      empty() const { return size_ == 0; }
   size_type size() const { return size_; }
-  size_type max_size() const {
-    // ?
-  }
+  size_type max_size() const { return 1; }  //?
 
   // Element Access
   mapped_type& at(const key_type& key) {
