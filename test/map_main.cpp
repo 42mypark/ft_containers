@@ -66,6 +66,8 @@ int main() {
     }
 
     std::cout << '\n';
-    ft_m.erase(5);
   }
+
+  TITLE("map");
+  {}
 }

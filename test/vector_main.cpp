@@ -35,7 +35,7 @@ int main() {
 
   {
     SUBTITLE("CONSTRUCTOR-3");
-    ft::vector<int>  ft_v((std::size_t)3, -3);  // ?
+    ft::vector<int>  ft_v(3, -3);
     std::vector<int> std_v(3, -3);
 
     LABEL("std", "ft");
@@ -116,7 +116,7 @@ int main() {
     ft::vector<int>  ft_v;
     std::vector<int> std_v;
 
-    ft_v.assign(3UL, -3);  // ?
+    ft_v.assign(3, -3);
     std_v.assign(3, -3);
 
     LABEL("std", "ft");
@@ -133,7 +133,7 @@ int main() {
     ft::vector<int>  ft_v;
     std::vector<int> std_v;
 
-    ft_v.assign(3UL, -3);
+    ft_v.assign(3, -3);
     std_v.assign(3, -3);
 
     LABEL("std", "ft");
@@ -152,7 +152,7 @@ int main() {
     ft::vector<int>  ft_v;
     std::vector<int> std_v;
 
-    ft_v.assign(3UL, -3);
+    ft_v.assign(3, -3);
     std_v.assign(3, -3);
     LABEL("std", "ft");
     ROW("[0]", std_v[0], ft_v[0]);
@@ -229,7 +229,7 @@ int main() {
     ft::vector<int>  ft_v;
     std::vector<int> std_v;
 
-    ft_v.assign(3UL, -3);
+    ft_v.assign(3, -3);
     std_v.assign(3, -3);
 
     LABEL("std", "ft");
@@ -255,7 +255,7 @@ int main() {
     ft::vector<int>  ft_v;
     std::vector<int> std_v;
 
-    ft_v.assign(3UL, -3);
+    ft_v.assign(3, -3);
     std_v.assign(3, -3);
 
     LABEL("std", "ft");
@@ -322,7 +322,7 @@ int main() {
     std::vector<int> std_v;
 
     LABEL("std", "ft");
-    ft_v.insert(ft_v.end(), 3UL, 1);
+    ft_v.insert(ft_v.end(), 3, 1);
     std_v.insert(std_v.end(), 3, 1);
 
     ROW("capacity", std_v.capacity(), ft_v.capacity());
@@ -331,7 +331,7 @@ int main() {
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    ft_v.insert(ft_v.begin() + 1, 3UL, 2);
+    ft_v.insert(ft_v.begin() + 1, 3, 2);
     std_v.insert(std_v.begin() + 1, 3, 2);
 
     ROW("capacity", std_v.capacity(), ft_v.capacity());
@@ -340,7 +340,7 @@ int main() {
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    ft_v.insert(ft_v.begin(), 3UL, 3);
+    ft_v.insert(ft_v.begin(), 3, 3);
     std_v.insert(std_v.begin(), 3, 3);
 
     ROW("capacity", std_v.capacity(), ft_v.capacity());

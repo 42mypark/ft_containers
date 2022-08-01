@@ -6,6 +6,8 @@
 #include <memory>
 #include <stdexcept>
 
+#include "enable_if.hpp"
+#include "is_integral.hpp"
 #include "lexicographical_compare.hpp"
 #include "reverse_iterator.hpp"
 
@@ -23,7 +25,7 @@ class vector {
   typedef const T&                               const_reference;
   typedef typename allocator_type::pointer       pointer;
   typedef typename allocator_type::const_pointer const_pointer;
-  typedef pointer                                iterator;  // ?
+  typedef pointer                                iterator;
   typedef const_pointer                          const_iterator;
   typedef ft::reverse_iterator<iterator>         reverse_iterator;
   typedef ft::reverse_iterator<const_iterator>   const_reverse_iterator;
@@ -32,7 +34,7 @@ class vector {
   pointer        begin_;
   pointer        end_;
   pointer        capacity_;
-  allocator_type alloc_;  // ?
+  allocator_type alloc_;
 
  private:
   void expand(size_type new_cap) {
@@ -70,7 +72,8 @@ class vector {
     capacity_ = begin_ + count;
   }
   template <typename InputIt>
-  vector(InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
+  vector(InputIt first, InputIt last, const allocator_type& alloc = allocator_type(),
+         typename enable_if<!is_integral<InputIt>::value>::type* = 0)
       : begin_(NULL), end_(NULL), capacity_(NULL), alloc_(alloc) {  // 5
     assign(first, last);
   }
@@ -105,7 +108,8 @@ class vector {
     }
   }
   template <typename InputIt>
-  void assign(InputIt first, InputIt last) {
+  void assign(InputIt first, InputIt last,
+              typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
     size_type count = last - first;
     if (capacity_ - begin_ < count) {
       pointer tmp = alloc_.allocate(count);
@@ -209,7 +213,8 @@ class vector {
     end_ += count;
   }
   template <class InputIt>
-  void insert(iterator pos, InputIt first, InputIt last) {
+  void insert(iterator pos, InputIt first, InputIt last,
+              typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
     size_type count = last - first;
     if (count == 0 || last < first)
       return;
