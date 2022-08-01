@@ -1,3 +1,6 @@
+#ifndef iterator_traits_HPP
+#define iterator_traits_HPP
+
 #include <cstddef>
 
 namespace ft {
@@ -36,3 +39,5 @@ struct iterator_traits<T* const> {
 };
 
 }  // namespace ft
+
+#endif  // iterator_traits_HPP

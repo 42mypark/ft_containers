@@ -1,6 +1,9 @@
+#ifndef reverse_iterator_HPP
+#define reverse_iterator_HPP
+
 #include <iterator>
 
-#include "iterator_traits.tcc"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
@@ -145,3 +148,5 @@ typename reverse_iterator<Iter>::difference_type operator-(const reverse_iterato
 }
 
 }  // namespace ft
+
+#endif  // reverse_iterator_HPP

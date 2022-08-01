@@ -10,7 +10,7 @@ INCS			= -Isrcs/utils \
 						-Isrcs/map
 
 
-TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test rbtree.test #reverse_iterator.test
+TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test rbtree.test map.test #reverse_iterator.test
 TEST_DIR	=	test
 CXXFLAGS	= -fsanitize=address -g
 ifeq ($(shell uname), Darwin)

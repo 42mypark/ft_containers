@@ -1,3 +1,6 @@
+#ifndef pair_HPP
+#define pair_HPP
+
 namespace ft {
 template <typename T1, typename T2>
 struct pair {
@@ -57,3 +60,5 @@ bool operator>=(const ft::pair<T1, T2>& lhs, const ft::pair<T1, T2>& rhs) {
 }
 
 }  // namespace ft
+
+#endif  // pair_HPP

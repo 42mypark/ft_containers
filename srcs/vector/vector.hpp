@@ -1,10 +1,13 @@
+#ifndef vector_HPP
+#define vector_HPP
+
 #include <cstddef>
 #include <limits>
 #include <memory>
 #include <stdexcept>
 
 #include "lexicographical_compare.tcc"
-#include "reverse_iterator.tcc"
+#include "reverse_iterator.hpp"
 
 namespace ft {
 
@@ -206,7 +209,7 @@ class vector {
     end_ += count;
   }
   template <class InputIt>
-  void insert(iterator pos, InputIt first, InputIt last) {  // if last < first?
+  void insert(iterator pos, InputIt first, InputIt last) {
     size_type count = last - first;
     if (count == 0 || last < first)
       return;
@@ -325,3 +328,5 @@ bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs
 }
 
 }  // namespace ft
+
+#endif  // vector_HPP

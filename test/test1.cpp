@@ -118,8 +118,9 @@ int main() {
   std::map<int, int> m;
   std::map<int, int> m2;
 
-  m.insert(std::make_pair(1, 1));
-  m.insert(std::make_pair(2, 2));
+  m.insert(std::make_pair(10, 1));
+  m.insert(std::make_pair(20, 2));
+  m.insert(std::make_pair(30, 2));
 
   std::map<int, int>::iterator it = m.begin();
   std::map<int, int>::iterator it2 = m.begin();
@@ -131,4 +132,7 @@ int main() {
   std::cout << (it++)->first << std::endl;
   std::cout << it->second << std::endl;
   std::cout << typeid(*it).name() << std::endl;
+
+  std::cout << m.upper_bound(30)->first << std::endl;
+  std::cout << m.lower_bound(20)->first << std::endl;
 }
