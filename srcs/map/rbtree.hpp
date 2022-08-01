@@ -227,7 +227,7 @@ class rbtree {
     inserted_ = NULL;
     error_ = false;
   }
-  rbtree() : nil_(BLACK), root_(&nil_), inserted_(NULL), error_(false) {}
+  rbtree() : nil_(BLACK), root_(&nil_), inserted_(NULL), error_(false), comp_(), extract_() {}
   node_reference insert(const value_type& v) {
     error_ = false;
     root_ = insert(root_, v);
