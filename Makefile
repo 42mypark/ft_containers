@@ -7,10 +7,11 @@ OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 INCS			= -Isrcs/utils \
 						-Isrcs/utils/is_integral \
 						-Isrcs/vector\
-						-Isrcs/map
+						-Isrcs/map\
+						-Isrcs/stack
 
 
-TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test rbtree.test map.test #reverse_iterator.test
+TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test rbtree.test map.test stack.test#reverse_iterator.test
 TEST_DIR	=	test
 CXXFLAGS	= -fsanitize=address -g
 ifeq ($(shell uname), Darwin)

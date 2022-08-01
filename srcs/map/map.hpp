@@ -1,3 +1,5 @@
+#ifndef MAP_hpp
+#define MAP_hpp
 
 #include <memory>
 
@@ -256,3 +258,5 @@ void swap(ft::map<Key, T, Compare, Alloc>& lhs, ft::map<Key, T, Compare, Alloc>&
   rhs.clear();
   rhs.insert(tmp.begin(), tmp.end());
 }
+
+#endif  // MAP_hpp
