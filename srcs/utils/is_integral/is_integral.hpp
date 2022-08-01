@@ -1,9 +1,9 @@
-#include "integral_constant.tcc"
-#include "remove_cv.tcc"
+#include "integral_constant.hpp"
+#include "remove_cv.hpp"
 
 namespace ft {
 
-typedef integral_constant<bool, true> true_type;
+typedef integral_constant<bool, true>  true_type;
 typedef integral_constant<bool, false> false_type;
 
 template <typename T>
@@ -52,6 +52,5 @@ template <>
 struct is_integral_helper<long long> : public true_type {};
 
 template <typename T>
-struct is_integral
-    : public is_integral_helper<typename remove_cv<T>::type>::type {};
+struct is_integral : public is_integral_helper<typename remove_cv<T>::type>::type {};
 }  // namespace ft

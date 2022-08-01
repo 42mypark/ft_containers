@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "macro.hpp"
-#include "reverse_iterator.tcc"
+#include "reverse_iterator.hpp"
 
 int main() {
   TITLE("reverse_iterator");

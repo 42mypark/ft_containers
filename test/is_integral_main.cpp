@@ -3,7 +3,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include "is_integral.tcc"
+#include "is_integral.hpp"
 #include "macro.hpp"
 
 class classA {

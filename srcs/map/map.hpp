@@ -1,7 +1,7 @@
 
 #include <memory>
 
-#include "lexicographical_compare.tcc"
+#include "lexicographical_compare.hpp"
 #include "pair.hpp"
 #include "rbtree.hpp"
 #include "rbtree_iterator.hpp"

@@ -6,7 +6,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "lexicographical_compare.tcc"
+#include "lexicographical_compare.hpp"
 #include "reverse_iterator.hpp"
 
 namespace ft {

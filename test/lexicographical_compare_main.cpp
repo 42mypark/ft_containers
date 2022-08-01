@@ -6,7 +6,7 @@
 #include <random>
 #include <vector>
 
-#include "lexicographical_compare.tcc"
+#include "lexicographical_compare.hpp"
 #include "macro.hpp"
 
 template <typename Cont>
