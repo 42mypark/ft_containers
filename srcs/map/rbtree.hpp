@@ -70,6 +70,8 @@ template <typename Key, typename Value, typename Compare, typename Allocator, ty
 class rbtree {
   typedef Key                                              key_type;
   typedef Value                                            value_type;
+  typedef std::size_t                                      size_type;
+  typedef std::ptrdiff_t                                   difference_type;
   typedef rbtreeNode<value_type>                           node;
   typedef typename node::color                             node_color;
   typedef typename node::pointer                           node_pointer;
@@ -303,6 +305,7 @@ class rbtree {
     }
     return *prev;
   }
+  size_type max_size() const { return std::numeric_limits<difference_type>::max() / sizeof(node); }
 };
 
 }  // namespace ft
