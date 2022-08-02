@@ -16,7 +16,7 @@ template <typename Key, typename T, typename Compare = std::less<Key>,
           typename Allocator = std::allocator<ft::pair<const Key, T> > >
 class map {
  public:
-  class extractor;
+  struct extractor;
 
  public:
   typedef Key                                                                  key_type;
@@ -65,11 +65,11 @@ class map {
   ~map() {}
   map() : size_(0), vc_(comp_) /*1*/ {}
   explicit map(const Compare& comp, const Allocator& alloc = Allocator())
-      : size_(0), comp_(comp), vc_(comp_), alloc_(alloc) /*2*/ {}
+      : size_(0), alloc_(alloc), comp_(comp), vc_(comp_) /*2*/ {}
   template <class InputIt>
   map(InputIt first, InputIt last, const Compare& comp = Compare(),
       const Allocator& alloc = Allocator())
-      : size_(0), comp_(comp), vc_(comp_), alloc_(alloc) /*3*/ {
+      : size_(0), alloc_(alloc), comp_(comp), vc_(comp_) /*3*/ {
     insert(first, last);
   }
   map(const map& other) : size_(0), vc_(comp_) /*4*/ { insert(other.begin(), other.end()); }

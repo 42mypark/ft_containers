@@ -1,3 +1,6 @@
+#ifndef lexicographical_compare_HPP
+#define lexicographical_compare_HPP
+
 namespace ft {
 
 template <typename T>
@@ -39,3 +42,5 @@ bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, I
 }
 
 }  // namespace ft
+
+#endif  // lexicographical_compare_HPP

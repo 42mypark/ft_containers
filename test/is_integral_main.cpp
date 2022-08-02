@@ -9,11 +9,16 @@
 class classA {
   int a;
   int b;
+  classA() : a(0), b(0) {
+    (void)a;
+    (void)b;
+  }
 };
 
 struct structA {
   int a;
   int b;
+  structA() : a(0), b(0) {}
 };
 
 int main() {

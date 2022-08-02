@@ -15,6 +15,10 @@ struct structA {
 class classA {
   int a;
   int b;
+  classA() {
+    (void)a;
+    (void)b;
+  }
 };
 
 int main() {

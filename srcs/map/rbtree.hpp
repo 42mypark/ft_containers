@@ -79,13 +79,13 @@ class rbtree {
   typedef typename node::const_reference                   const_node_reference;
   typedef typename Allocator::template rebind<node>::other node_allocator;
 
-  const Extract  extract_;
-  const Compare  comp_;
   node           nil_;
   node_pointer   root_;
   node_pointer   inserted_;
   node_allocator alloc_;
   bool           error_;
+  const Compare  comp_;
+  const Extract  extract_;
 
  private:
   bool isRed(node_pointer n) { return n->color_ == RED; }
@@ -133,7 +133,7 @@ class rbtree {
     if (np == &nil_) {
       // inserted_ = new node(p, nil_);
       inserted_ = alloc_.allocate(1);
-      alloc_.construct(inserted_, p, nil_);
+      alloc_.construct(inserted_, node(p, nil_));
       return inserted_;
     }
     if (comp_(extract_(np->value_), extract_(p))) {

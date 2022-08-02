@@ -66,7 +66,7 @@ class vector {
                   const allocator_type& alloc = allocator_type())
       : alloc_(alloc) {
     begin_ = alloc_.allocate(count);
-    for (end_ = begin_; end_ - begin_ < count; ++end_) {
+    for (end_ = begin_; end_ - begin_ < static_cast<difference_type>(count); ++end_) {
       *end_ = value;
     }
     capacity_ = begin_ + count;
@@ -95,14 +95,14 @@ class vector {
     return (*this);
   }
   void assign(size_type count, const T& value) {
-    if (capacity_ - begin_ < count) {
+    if (capacity_ - begin_ < static_cast<difference_type>(count)) {
       pointer tmp = alloc_.allocate(count);
       alloc_.deallocate(begin_, capacity_ - begin_);
       begin_ = tmp;
       capacity_ = begin_ + count;
     }
     end_ = begin_;
-    for (int i = 0; i < count; ++i) {
+    for (size_type i = 0; i < count; ++i) {
       *end_ = value;
       ++end_;
     }
@@ -110,8 +110,8 @@ class vector {
   template <typename InputIt>
   void assign(InputIt first, InputIt last,
               typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
-    size_type count = last - first;
-    if (capacity_ - begin_ < count) {
+    size_type count = static_cast<size_type>(last - first);
+    if (capacity_ - begin_ < static_cast<difference_type>(count)) {
       pointer tmp = alloc_.allocate(count);
       alloc_.deallocate(begin_, capacity_ - begin_);
       begin_ = tmp;
@@ -161,7 +161,7 @@ class vector {
   size_type capacity() const { return capacity_ - begin_; }
 
   void reserve(size_type new_cap) {
-    if (capacity_ - begin_ >= new_cap)
+    if (capacity_ - begin_ >= static_cast<difference_type>(new_cap))
       return;
     pointer tmp = alloc_.allocate(new_cap);
     for (iterator it = begin_; it != end_; ++it) {
@@ -229,7 +229,7 @@ class vector {
     for (iterator it = end_ - 1; it != pos - 1; --it) {
       *(it + count) = *it;
     }
-    for (int i = 0; i < count; ++i) {
+    for (size_type i = 0; i < count; ++i) {
       *(pos + i) = *(first + i);
     }
     end_ += count;
@@ -271,10 +271,10 @@ class vector {
     if (count > old_cap) {
       size_type new_cap = old_cap * 2 > count ? old_cap * 2 : count;
       expand(new_cap);
-    } else if (count < end_ - begin_) {
+    } else if (static_cast<difference_type>(count) < end_ - begin_) {
       end_ = begin_ + count;
     }
-    for (int i = end_ - begin_; i < count; ++i) {
+    for (size_type i = end_ - begin_; i < count; ++i) {
       *(begin_ + i) = value;
       ++end_;
     }
@@ -308,10 +308,6 @@ bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs
 }
 template <typename T, typename Alloc>
 bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  typename ft::vector<T, Alloc>::iterator li =
-      const_cast<typename ft::vector<T>::iterator>(lhs.begin());
-  typename ft::vector<T, Alloc>::iterator ri =
-      const_cast<typename ft::vector<T>::iterator>(rhs.begin());
   return !(lhs == rhs);
 }
 

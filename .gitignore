@@ -6,3 +6,4 @@ objs/
 **/*.gch
 *.out
 *.dSYM
+for_tester/
