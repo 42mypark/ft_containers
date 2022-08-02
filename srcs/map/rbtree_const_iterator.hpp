@@ -55,6 +55,8 @@ class rbtree_const_iterator {
   reference operator[](difference_type n) const { return *(*this + n); }
 
   rbtree_const_iterator& operator++() {
+    if (isNil())
+      return *this;
     if (!isRightNil()) {
       current_ = current_->right_;
       while (!isLeftNil())

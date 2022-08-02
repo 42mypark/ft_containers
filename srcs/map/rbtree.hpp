@@ -34,13 +34,35 @@ struct rbtreeNode {
     a = b;
     b = tmp;
   }
+  void adjust_self(pointer a, pointer b) {
+    if (a->parent_ == a)
+      a->parent_ = b;
+    if (a->left_ == a)
+      a->left_ = b;
+    if (a->right_ == a)
+      a->right_ = b;
+  }
+  void change_surround(reference node, reference other, reference nil) {
+    if (node.left_ != &nil)
+      node.left_->parent_ = &node;
+    if (node.right_ != &nil)
+      node.right_->parent_ = &node;
+    if (node.parent_->left_ == &other)
+      node.parent_->left_ = &node;
+    if (node.parent_->right_ == &other)
+      node.parent_->right_ = &node;
+  }
 
  public:
-  void swap(rbtreeNode& other) {
+  void swap(rbtreeNode& other, reference nil) {
     swap(parent_, other.parent_);
     swap(left_, other.left_);
     swap(right_, other.right_);
     swap(color_, other.color_);
+    adjust_self(this, &other);
+    adjust_self(&other, this);
+    change_surround(*this, other, nil);
+    change_surround(other, *this, nil);
   }
 };
 
@@ -189,7 +211,8 @@ class rbtree {
       same = !comp_(extract_(np->value_), k);
       if (same) {
         node_pointer min = leftMost(np->right_);
-        np->swap(*min);
+        np->swap(*min, nil_);
+        np = min;
         np->right_ = removeMin(np->right_);
       } else
         np->right_ = remove(np->right_, k);
@@ -268,13 +291,15 @@ class rbtree {
 
   node_reference bound(const key_type& k) {
     node_pointer curr = root_;
-    node_pointer prev;
+    node_pointer prev = root_;
     while (curr != &nil_) {
       prev = curr;
-      if (comp_(k, extract_(curr->value_)))
+      if (comp_(extract_(curr->value_), k))
+        curr = curr->right_;
+      else if (comp_(k, extract_(curr->value_)))
         curr = curr->left_;
       else
-        curr = curr->right_;
+        return *curr;
     }
     return *prev;
   }

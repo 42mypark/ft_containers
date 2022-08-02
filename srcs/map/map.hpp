@@ -136,8 +136,8 @@ class map {
     --size_;
   }
   void erase(iterator first, iterator last) /*2*/ {
-    for (; first != last; ++first) {  // range?
-      tree_.remove(first->first);
+    for (; first != last;) {  // ? range
+      tree_.remove((first++)->first);
       --size_;
     }
   }
@@ -192,10 +192,10 @@ class map {
       return ++it;
   }
   ft::pair<iterator, iterator> equal_range(const key_type& key) /*1*/ {
-    return ft::make_pair(lower_bound(), upper_bound());
+    return ft::make_pair(lower_bound(key), upper_bound(key));
   }
   ft::pair<const_iterator, const_iterator> equal_range(const Key& key) const /*2*/ {
-    return ft::make_pair(lower_bound(), upper_bound());
+    return ft::make_pair(lower_bound(key), upper_bound(key));
   }
   // Observer
   key_compare   key_comp() const { return comp_; }

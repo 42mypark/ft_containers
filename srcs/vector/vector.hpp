@@ -157,7 +157,7 @@ class vector {
   // Capacity
   bool      empty() const { return end_ == begin_; }
   size_type size() const { return end_ - begin_; }
-  size_type max_size() const { return std::numeric_limits<difference_type>::max(); }
+  size_type max_size() const { return std::numeric_limits<difference_type>::max() / sizeof(T); }
   size_type capacity() const { return capacity_ - begin_; }
 
   void reserve(size_type new_cap) {
