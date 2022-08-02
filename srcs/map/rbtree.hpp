@@ -24,13 +24,8 @@ struct rbtreeNode {
   ~rbtreeNode() {}
   rbtreeNode(const value_type& v, reference nil)
       : value_(v), color_(RED), left_(&nil), right_(&nil), parent_(&nil) {}
-  rbtreeNode(color c) : color_(c), left_(NULL), right_(NULL), parent_(NULL) {}
-  // rbtreeNode(const rbtreeNode& node)
-  //     : value_(node.value_),
-  //       color_(node.color_),
-  //       left_(node.left_),
-  //       right_(node.right_),
-  //       parent_(node.parent_) {}
+  rbtreeNode(color c) : color_(c), left_(this), right_(this), parent_(NULL) {}
+
  private:
   template <typename T>
   void swap(T& a, T& b) {
@@ -47,15 +42,6 @@ struct rbtreeNode {
     swap(right_, other.right_);
     swap(color_, other.color_);
   }
-  void printNode() {
-    std::cout << "value : " << value_.first << ", " << value_.second << '\n';
-    std::cout << "color : " << color_ << '\n';
-    std::cout << "this  : " << this << '\n';
-    std::cout << "left  : " << left_ << '\n';
-    std::cout << "right : " << right_ << '\n';
-    std::cout << "parent: " << parent_ << '\n';
-    std::cout << std::endl;
-  }
 };
 
 template <typename Key, typename Value, typename Compare, typename Allocator, typename Extract>
@@ -69,12 +55,13 @@ class rbtree {
   typedef typename node::const_reference                   const_node_reference;
   typedef typename Allocator::template rebind<node>::other node_allocator;
 
-  const Extract extract_;
-  const Compare comp_;
-  node          nil_;
-  node_pointer  root_;
-  node_pointer  inserted_;
-  bool          error_;
+  const Extract  extract_;
+  const Compare  comp_;
+  node           nil_;
+  node_pointer   root_;
+  node_pointer   inserted_;
+  node_allocator alloc_;
+  bool           error_;
 
  private:
   bool isRed(node_pointer n) { return n->color_ == RED; }
@@ -91,6 +78,8 @@ class rbtree {
     nr->left_ = np;
     nr->color_ = np->color_;
     np->color_ = RED;
+    if (np->right_ != &nil_)
+      np->right_->parent_ = np;
     return nr;
   }
   node_pointer rotateRight(node_pointer np) {
@@ -101,6 +90,8 @@ class rbtree {
     nl->right_ = np;
     nl->color_ = np->color_;
     np->color_ = RED;
+    if (np->left_ != &nil_)
+      np->left_->parent_ = np;
     return nl;
   }
   node_pointer fixUp(node_pointer np) {
@@ -116,13 +107,15 @@ class rbtree {
   }
   node_pointer insert(node_pointer np, const value_type& p) {
     if (np == &nil_) {
-      inserted_ = new node(p, nil_);
+      // inserted_ = new node(p, nil_);
+      inserted_ = alloc_.allocate(1);
+      alloc_.construct(inserted_, p, nil_);
       return inserted_;
     }
-    if (comp_(extract_(np->value_), p.first)) {
+    if (comp_(extract_(np->value_), extract_(p))) {
       np->right_ = insert(np->right_, p);
       np->right_->parent_ = np;
-    } else if (comp_(p.first, extract_(np->value_))) {
+    } else if (comp_(extract_(p), extract_(np->value_))) {
       np->left_ = insert(np->left_, p);
       np->left_->parent_ = np;
     } else {
@@ -155,9 +148,15 @@ class rbtree {
       np = np->left_;
     return np;
   }
+  node_pointer rightMost(node_pointer np) {
+    while (np->right_ != &nil_)
+      np = np->right_;
+    return np;
+  }
   node_pointer removeMin(node_pointer np) {
     if (np->left_ == &nil_) {
-      delete np;
+      // delete np;
+      alloc_.deallocate(np, 1);
       return &nil_;
     }
     if (!isRed(np->left_) && !isRed(np->left_->left_))
@@ -181,7 +180,8 @@ class rbtree {
         np = rotateRight(np);
       same = !comp_(extract_(np->value_), k);
       if (same && np->right_ == &nil_) {
-        delete np;
+        // delete np;
+        alloc_.deallocate(np, 1);
         return &nil_;
       }
       if (!isRed(np->right_) && !isRed(np->right_->right_))
@@ -201,7 +201,7 @@ class rbtree {
       return;
     removeTree(np->left_);
     removeTree(np->right_);
-    delete np;
+    alloc_.deallocate(np, 1);
   }
   node_pointer search(const key_type& k) {
     node_pointer curr = root_;
@@ -236,14 +236,15 @@ class rbtree {
     root_->color_ = BLACK;
     return *inserted_;
   }
-  // node_reference insert(node_pointer hint, const value_type& v) {
-  //   error_ = false;
-  //   hint->parent_ = insert(hint->parent_, v);
-  //   nil_.left_ = root_;
-  //   nil_.right_ = leftMost(root_);
-  //   root_->color_ = BLACK;
-  //   return *inserted_;
-  // }
+  node_reference insert(const value_type& v, node_pointer hint) {
+    static_cast<void>(hint);
+    error_ = false;
+    root_ = insert(root_, v);
+    nil_.left_ = root_;
+    nil_.right_ = leftMost(root_);
+    root_->color_ = BLACK;
+    return *inserted_;
+  }
   void remove(const key_type& k) {
     error_ = false;
     root_ = remove(root_, k);
@@ -259,9 +260,12 @@ class rbtree {
     error_ = false;
     return *search(k);
   }
-  node_reference nil() { return nil_; }
-  node_reference leftMost() { return *nil_.right_; }
-  bool           error() { return error_; }
+  node_reference       nil() { return nil_; }
+  const_node_reference nil() const { return nil_; }
+  node_reference       leftMost() { return *nil_.right_; }
+  const_node_reference leftMost() const { return *nil_.right_; }
+  bool                 error() { return error_; }
+
   node_reference bound(const key_type& k) {
     node_pointer curr = root_;
     node_pointer prev;

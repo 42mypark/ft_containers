@@ -678,7 +678,7 @@ int main() {
     ft_v.push_back(1);
     ft_v.push_back(1);
     std_v2.assign(5, 2);
-    ft_v2.assign((size_t)5, 2);
+    ft_v2.assign(5, 2);
 
     print_cont("std ", std_v);
     print_cont("std2", std_v2);

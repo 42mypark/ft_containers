@@ -13,10 +13,10 @@ INCS			= -Isrcs/utils \
 
 TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test rbtree.test map.test stack.test#reverse_iterator.test
 TEST_DIR	=	test
-CXXFLAGS	= -fsanitize=address -g
-ifeq ($(shell uname), Darwin)
-	CXXFLAGS += -std=c++98
-endif
+CXXFLAGS	= -g -fsanitize=address 
+#ifeq ($(shell uname), Darwin)
+#	CXXFLAGS += -std=c++98
+#endif
 ifeq ($(shell uname), Linux)
 	CXXFLAGS += -std=c++11
 endif

@@ -144,7 +144,7 @@ reverse_iterator<Iter> operator+(typename reverse_iterator<Iter>::difference_typ
 template <typename Iter>
 typename reverse_iterator<Iter>::difference_type operator-(const reverse_iterator<Iter>& lhs,
                                                            const reverse_iterator<Iter>& rhs) {
-  return rhs.base() - lhs.base();  //?
+  return rhs.base() - lhs.base();
 }
 
 }  // namespace ft

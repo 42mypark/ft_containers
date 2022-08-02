@@ -1,5 +1,6 @@
 #ifndef pair_HPP
 #define pair_HPP
+#include <utility>
 
 namespace ft {
 template <typename T1, typename T2>
@@ -14,6 +15,7 @@ struct pair {
   pair() : first(T1()), second(T2()) {}
   pair(const T1& x, const T2& y) : first(x), second(y) {}
   pair(const pair& p) : first(p.first), second(p.second) {}
+  pair(const std::pair<T1, T2>& p) : first(p.first), second(p.second) {}
   template <class U1, class U2>
   pair(const pair<U1, U2>& p) : first(p.first), second(p.second) {}
 
