@@ -314,6 +314,15 @@ int main() {
 
     ROW("empty", std_m.empty(), ft_m.empty());
     ROW("size", std_m.size(), ft_m.size());
+
+    ft_m.insert(ft::map<int, int>::value_type(1, 1));
+
+    std_m.insert(std::map<int, int>::value_type(1, 1));
+
+    std::cout << '\n';
+
+    ROW("empty", std_m.empty(), ft_m.empty());
+    ROW("size", std_m.size(), ft_m.size());
   }
   {
     SUBTITLE("map.insert(value)");

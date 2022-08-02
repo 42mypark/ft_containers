@@ -13,7 +13,7 @@ class stack {
 
  public:
   ~stack();
-  stack();
+  explicit stack(const Cont& cont = Cont());
   stack(const stack<T, Cont>& ms);
   stack<T, Cont>&                               operator=(const stack<T, Cont>& ms);
   typedef Cont                                  container_type;
@@ -43,7 +43,7 @@ template <typename T, typename Cont>
 stack<T, Cont>::~stack() {}
 
 template <typename T, typename Cont>
-stack<T, Cont>::stack() {}
+stack<T, Cont>::stack(const Cont& ct) : c(ct) {}
 
 template <typename T, typename Cont>
 stack<T, Cont>::stack(const stack<T, Cont>& ms) : c(ms.c) {}
