@@ -2,10 +2,13 @@
 #define vector_HPP
 
 #include <cstddef>
+#include <iostream>
 #include <limits>
 #include <memory>
 #include <stdexcept>
 
+#include "array_const_iterator.hpp"
+#include "array_iterator.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "lexicographical_compare.hpp"
@@ -25,15 +28,15 @@ class vector {
   typedef const T&                               const_reference;
   typedef typename allocator_type::pointer       pointer;
   typedef typename allocator_type::const_pointer const_pointer;
-  typedef pointer                                iterator;
-  typedef const_pointer                          const_iterator;
+  typedef ft::array_iterator<pointer>            iterator;
+  typedef ft::array_const_iterator<pointer>      const_iterator;
   typedef ft::reverse_iterator<iterator>         reverse_iterator;
   typedef ft::reverse_iterator<const_iterator>   const_reverse_iterator;
 
  protected:
-  pointer        begin_;
-  pointer        end_;
-  pointer        capacity_;
+  iterator       begin_;
+  iterator       end_;
+  iterator       capacity_;
   allocator_type alloc_;
 
  private:
@@ -42,7 +45,7 @@ class vector {
     for (iterator it = begin_; it != end_; ++it) {
       tmp[it - begin_] = *it;
     }
-    alloc_.deallocate(begin_, capacity_ - begin_);
+    alloc_.deallocate(begin_.base(), capacity_ - begin_);
     size_type old_end = end_ - begin_;
     begin_ = tmp;
     end_ = begin_ + old_end;
@@ -51,7 +54,7 @@ class vector {
 
  public:
   // Destructor & Constructor
-  ~vector() { alloc_.deallocate(begin_, capacity_ - begin_); }
+  ~vector() { alloc_.deallocate(begin_.base(), capacity_ - begin_); }
   vector() {  // 1
     begin_ = alloc_.allocate(0);
     end_ = begin_;
@@ -66,9 +69,8 @@ class vector {
                   const allocator_type& alloc = allocator_type())
       : alloc_(alloc) {
     begin_ = alloc_.allocate(count);
-    for (end_ = begin_; end_ - begin_ < static_cast<difference_type>(count); ++end_) {
+    for (end_ = begin_; end_ - begin_ < static_cast<difference_type>(count); ++end_)
       *end_ = value;
-    }
     capacity_ = begin_ + count;
   }
   template <typename InputIt>
@@ -97,7 +99,7 @@ class vector {
   void assign(size_type count, const T& value) {
     if (capacity_ - begin_ < static_cast<difference_type>(count)) {
       pointer tmp = alloc_.allocate(count);
-      alloc_.deallocate(begin_, capacity_ - begin_);
+      alloc_.deallocate(begin_.base(), capacity_ - begin_);
       begin_ = tmp;
       capacity_ = begin_ + count;
     }
@@ -108,12 +110,11 @@ class vector {
     }
   }
   template <typename InputIt>
-  void assign(InputIt first, InputIt last,
-              typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
+  void assign(InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
     size_type count = static_cast<size_type>(last - first);
     if (capacity_ - begin_ < static_cast<difference_type>(count)) {
       pointer tmp = alloc_.allocate(count);
-      alloc_.deallocate(begin_, capacity_ - begin_);
+      alloc_.deallocate(begin_.base(), capacity_ - begin_);
       begin_ = tmp;
       capacity_ = begin_ + count;
     }
@@ -141,14 +142,14 @@ class vector {
   const_reference front() const { return *begin_; }
   reference       back() { return *(end_ - 1); }
   const_reference back() const { return *(end_ - 1); }
-  T*              data() { return begin_; }
-  const T*        data() const { return begin_; }
+  T*              data() { return begin_.base(); }
+  const T*        data() const { return begin_.base(); }
 
   // Iterator
   iterator               begin() { return begin_; }
-  const_iterator         begin() const { return begin_; }
+  const_iterator         begin() const { return static_cast<const_iterator>(begin_); }
   iterator               end() { return end_; }
-  const_iterator         end() const { return end_; }
+  const_iterator         end() const { return static_cast<const_iterator>(end_); }
   reverse_iterator       rbegin() { return static_cast<reverse_iterator>(end_); }
   const_reverse_iterator rbegin() const { return static_cast<const_reverse_iterator>(end_); }
   reverse_iterator       rend() { return static_cast<reverse_iterator>(begin_); }
@@ -167,7 +168,7 @@ class vector {
     for (iterator it = begin_; it != end_; ++it) {
       tmp[it - begin_] = *it;
     }
-    alloc_.deallocate(begin_, capacity_ - begin_);
+    alloc_.deallocate(begin_.base(), capacity_ - begin_);
     end_ = tmp + (end_ - begin_);
     begin_ = tmp;
     capacity_ = begin_ + new_cap;
@@ -213,8 +214,7 @@ class vector {
     end_ += count;
   }
   template <class InputIt>
-  void insert(iterator pos, InputIt first, InputIt last,
-              typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
+  void insert(iterator pos, InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value>::type* = 0) {
     size_type count = last - first;
     if (count == 0 || last < first)
       return;
@@ -287,6 +287,9 @@ class vector {
     clear();
     insert(begin_, tmp.begin(), tmp.end());
   }
+
+  // template <typename T1, class C1>
+  // friend bool swap(const vector<T1, C1>& lhs, const vector<T1, C1>& rhs);
 };
 
 // Non member function
@@ -298,8 +301,8 @@ void swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs) {
 
 template <typename T, typename Alloc>
 bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-  typename ft::vector<T>::iterator li = const_cast<typename ft::vector<T>::iterator>(lhs.begin());
-  typename ft::vector<T>::iterator ri = const_cast<typename ft::vector<T>::iterator>(rhs.begin());
+  typename ft::vector<T, Alloc>::const_iterator li = lhs.begin();
+  typename ft::vector<T, Alloc>::const_iterator ri = rhs.begin();
   for (; li != lhs.end() && ri != rhs.end(); ++li, ++ri) {
     if (*li != *ri)
       return false;

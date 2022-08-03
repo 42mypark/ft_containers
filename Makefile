@@ -10,10 +10,10 @@ INCS			= -Isrcs/utility \
 						-Isrcs/map\
 						-Isrcs/stack
 
-TESTS			=	is_integral.test enable_if.test vector.test lexicographical_compare.test pair.test map.test stack.test  \
+TESTS			=	is_integral.test enable_if.test lexicographical_compare.test pair.test map.test stack.test iterator_traits.test vector.test \
 						performance_std.test performance_ft.test  #reverse_iterator.test
 TEST_DIR	=	test
-CXXFLAGS	= -Wall -Werror -Wextra #-g -fsanitize=address 
+CXXFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address 
 ifeq ($(shell uname), Darwin)
 	CXXFLAGS += -std=c++98
 endif

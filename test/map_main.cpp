@@ -276,6 +276,8 @@ int main() {
     // ROW("[-10]", std_m[-10], ft_m[-10]);
     // ROW("[-1]", std_m[-1], ft_m[-1]);
     // ROW("[-2]", std_m[-2], ft_m[-2]);
+    std_m[6] = 6;
+    ft_m[6] = 6;
     print_cont("std", std_m);
     print_cont("ft ", ft_m);
   }
@@ -435,14 +437,24 @@ int main() {
 
     std::map<int, int> std_v;
     ft::map<int, int>  ft_v;
+
     std_v.insert(std::map<int, int>::value_type(1, 1));
     std_v.insert(std::map<int, int>::value_type(2, 2));
     std_v.insert(std::map<int, int>::value_type(3, 3));
+    ft_v.insert(ft::map<int, int>::value_type(1, 1));
+    ft_v.erase(ft_v.begin());
     ft_v.insert(ft::map<int, int>::value_type(1, 1));
     ft_v.insert(ft::map<int, int>::value_type(2, 2));
     ft_v.insert(ft::map<int, int>::value_type(3, 3));
 
     LABEL("std", "ft");
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    std_v.erase(std_v.begin());
+    ft_v.erase(ft_v.begin());
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
@@ -457,13 +469,6 @@ int main() {
 
     std_v.erase(--std_v.end());
     ft_v.erase(ft_v.end() - 1);
-    ROW("size", std_v.size(), ft_v.size());
-
-    print_cont("std", std_v);
-    print_cont("ft ", ft_v);
-
-    std_v.erase(std_v.begin());
-    ft_v.erase(ft_v.begin());
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
@@ -561,29 +566,31 @@ int main() {
 
     LABEL("std", "ft");
 
-    std_v.erase(2);
-    ft_v.erase(2);
+    ROW("ret", std_v.erase(2), ft_v.erase(2));
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    std_v.erase(-4);
-    ft_v.erase(-4);
+    ROW("ret", std_v.erase(-4), ft_v.erase(-4));
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    std_v.erase(-3);
-    ft_v.erase(-3);
+    ROW("ret", std_v.erase(-3), ft_v.erase(-3));
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
-    std_v.erase(6);
-    ft_v.erase(6);
+    ROW("ret", std_v.erase(6), ft_v.erase(6));
+    ROW("size", std_v.size(), ft_v.size());
+
+    print_cont("std", std_v);
+    print_cont("ft ", ft_v);
+
+    ROW("ret", std_v.erase(7), ft_v.erase(7));
     ROW("size", std_v.size(), ft_v.size());
 
     print_cont("std", std_v);
@@ -599,20 +606,21 @@ int main() {
     std::map<int, int> std_m2;
     ft::map<int, int>  ft_m2;
 
-    ft_m.insert(ft::map<int, int>::value_type(1, 1));
-    ft_m.insert(ft::map<int, int>::value_type(2, 2));
-    ft_m.insert(ft::map<int, int>::value_type(3, 3));
-    ft_m.insert(ft::map<int, int>::value_type(4, 4));
+    for (int i = 0; i < 4; i++) {
+      ft_m.insert(ft::map<int, int>::value_type(i, i));
+      std_m.insert(std::map<int, int>::value_type(i, i));
+    }
+
+    ft_m.swap(ft_m2);
+    std_m.swap(std_m2);
+
+    ft_m.swap(ft_m2);
+    std_m.swap(std_m2);
 
     ft_m2.insert(ft::map<int, int>::value_type(-1, -1));
     ft_m2.insert(ft::map<int, int>::value_type(-2, -2));
     ft_m2.insert(ft::map<int, int>::value_type(-3, -3));
     ft_m2.insert(ft::map<int, int>::value_type(-4, -4));
-
-    std_m.insert(std::map<int, int>::value_type(1, 1));
-    std_m.insert(std::map<int, int>::value_type(2, 2));
-    std_m.insert(std::map<int, int>::value_type(3, 3));
-    std_m.insert(std::map<int, int>::value_type(4, 4));
 
     std_m2.insert(std::map<int, int>::value_type(-1, -1));
     std_m2.insert(std::map<int, int>::value_type(-2, -2));
@@ -741,8 +749,8 @@ int main() {
     LABEL("std", "ft");
     ROW("first", std_m.find(20)->first, ft_m.find(20)->first);
     ROW("second", std_m.find(20)->second, ft_m.find(20)->second);
-    ROW("first", std_m.find(15)->first, ft_m.find(15)->first);
-    ROW("second", std_m.find(15)->second, ft_m.find(15)->second);
+    // ROW("first", std_m.find(15)->first, ft_m.find(15)->first);
+    // ROW("second", std_m.find(15)->second, ft_m.find(15)->second);
   }
   {
     SUBTITLE("map.equal_range(key)");
@@ -840,102 +848,110 @@ int main() {
     std::map<int, int> std_m;
     ft::map<int, int>  ft_m;
 
+    ft_m.insert(ft::map<int, int>::value_type(-1, -1));
+    ft_m.insert(ft::map<int, int>::value_type(5, 5));
     ft_m.insert(ft::map<int, int>::value_type(10, 10));
+    ft_m.insert(ft::map<int, int>::value_type(12, 12));
     ft_m.insert(ft::map<int, int>::value_type(20, 20));
+    ft_m.insert(ft::map<int, int>::value_type(27, 27));
     ft_m.insert(ft::map<int, int>::value_type(30, 30));
     ft_m.insert(ft::map<int, int>::value_type(40, 40));
 
+    std_m.insert(std::map<int, int>::value_type(-1, -1));
+    std_m.insert(std::map<int, int>::value_type(5, 5));
     std_m.insert(std::map<int, int>::value_type(10, 10));
+    std_m.insert(std::map<int, int>::value_type(12, 12));
     std_m.insert(std::map<int, int>::value_type(20, 20));
+    std_m.insert(std::map<int, int>::value_type(27, 27));
     std_m.insert(std::map<int, int>::value_type(30, 30));
     std_m.insert(std::map<int, int>::value_type(40, 40));
 
-    ft_m.lower_bound(15);
-
     LABEL("std", "ft");
 
-    ROW("first", std_m.upper_bound(-10)->first, ft_m.upper_bound(-10)->first);
-    ROW("second", std_m.upper_bound(-10)->second, ft_m.upper_bound(-10)->second);
-
-    ROW("first", std_m.upper_bound(15)->first, ft_m.upper_bound(15)->first);
-    ROW("second", std_m.upper_bound(15)->second, ft_m.upper_bound(15)->second);
-
-    ROW("first", std_m.upper_bound(10)->first, ft_m.upper_bound(10)->first);
-    ROW("second", std_m.upper_bound(10)->second, ft_m.upper_bound(10)->second);
-
-    ROW("first", std_m.upper_bound(10)->first, ft_m.upper_bound(10)->first);
-    ROW("second", std_m.upper_bound(10)->second, ft_m.upper_bound(10)->second);
-
-    ROW("first", std_m.upper_bound(11)->first, ft_m.upper_bound(11)->first);
-    ROW("second", std_m.upper_bound(11)->second, ft_m.upper_bound(11)->second);
-
-    // ROW("first", std_m.upper_bound(40)->first, ft_m.upper_bound(40)->first);
-    // ROW("second", std_m.upper_bound(40)->second, ft_m.upper_bound(40)->second);
-
-    // ROW("first", std_m.upper_bound(41)->first, ft_m.upper_bound(41)->first);
-    // ROW("second", std_m.upper_bound(41)->second, ft_m.upper_bound(41)->second);
+    for (int i = -10; i < 40; i++) {
+      ROW("first", std_m.upper_bound(i)->first, ft_m.upper_bound(i)->first);
+      ROW("second", std_m.upper_bound(i)->second, ft_m.upper_bound(i)->second);
+    }
   }
   {
     SUBTITLE("map.lower_bound(key)");
     std::map<int, int> std_m;
     ft::map<int, int>  ft_m;
 
+    ft_m.insert(ft::map<int, int>::value_type(-1, -1));
+    ft_m.insert(ft::map<int, int>::value_type(5, 5));
     ft_m.insert(ft::map<int, int>::value_type(10, 10));
+    ft_m.insert(ft::map<int, int>::value_type(12, 12));
     ft_m.insert(ft::map<int, int>::value_type(20, 20));
+    ft_m.insert(ft::map<int, int>::value_type(27, 27));
     ft_m.insert(ft::map<int, int>::value_type(30, 30));
     ft_m.insert(ft::map<int, int>::value_type(40, 40));
 
+    std_m.insert(std::map<int, int>::value_type(-1, -1));
+    std_m.insert(std::map<int, int>::value_type(5, 5));
     std_m.insert(std::map<int, int>::value_type(10, 10));
+    std_m.insert(std::map<int, int>::value_type(12, 12));
     std_m.insert(std::map<int, int>::value_type(20, 20));
+    std_m.insert(std::map<int, int>::value_type(27, 27));
     std_m.insert(std::map<int, int>::value_type(30, 30));
     std_m.insert(std::map<int, int>::value_type(40, 40));
 
-    ft_m.lower_bound(15);
-
     LABEL("std", "ft");
 
-    ROW("first", std_m.lower_bound(-10)->first, ft_m.lower_bound(-10)->first);
-    ROW("second", std_m.lower_bound(-10)->second, ft_m.lower_bound(-10)->second);
-
-    ROW("first", std_m.lower_bound(15)->first, ft_m.lower_bound(15)->first);
-    ROW("second", std_m.lower_bound(15)->second, ft_m.lower_bound(15)->second);
-
-    ROW("first", std_m.lower_bound(10)->first, ft_m.lower_bound(10)->first);
-    ROW("second", std_m.lower_bound(10)->second, ft_m.lower_bound(10)->second);
-
-    ROW("first", std_m.lower_bound(10)->first, ft_m.lower_bound(10)->first);
-    ROW("second", std_m.lower_bound(10)->second, ft_m.lower_bound(10)->second);
-
-    ROW("first", std_m.lower_bound(11)->first, ft_m.lower_bound(11)->first);
-    ROW("second", std_m.lower_bound(11)->second, ft_m.lower_bound(11)->second);
-
-    ROW("first", std_m.lower_bound(40)->first, ft_m.lower_bound(40)->first);
-    ROW("second", std_m.lower_bound(40)->second, ft_m.lower_bound(40)->second);
-
-    // ROW("first", std_m.lower_bound(41)->first, ft_m.lower_bound(41)->first);
-    // ROW("second", std_m.lower_bound(41)->second, ft_m.lower_bound(41)->second);
+    for (int i = -10; i < 40; i++) {
+      ROW("first", std_m.lower_bound(i)->first, ft_m.lower_bound(i)->first);
+      ROW("second", std_m.lower_bound(i)->second, ft_m.lower_bound(i)->second);
+    }
   }
   {
     SUBTITLE("operator==(eq)");
+    {
+      std::map<int, int> std_v;
+      ft::map<int, int>  ft_v;
 
-    std::map<int, int> std_v;
-    ft::map<int, int>  ft_v;
+      std_v.insert(std::map<int, int>::value_type(1, 1));
+      std_v.insert(std::map<int, int>::value_type(2, 2));
+      std_v.insert(std::map<int, int>::value_type(3, 3));
+      ft_v.insert(ft::map<int, int>::value_type(1, 1));
+      ft_v.insert(ft::map<int, int>::value_type(2, 2));
+      ft_v.insert(ft::map<int, int>::value_type(3, 3));
 
-    std_v.insert(std::map<int, int>::value_type(1, 1));
-    std_v.insert(std::map<int, int>::value_type(2, 2));
-    std_v.insert(std::map<int, int>::value_type(3, 3));
-    ft_v.insert(ft::map<int, int>::value_type(1, 1));
-    ft_v.insert(ft::map<int, int>::value_type(2, 2));
-    ft_v.insert(ft::map<int, int>::value_type(3, 3));
+      std::map<int, int> std_v2(std_v);
+      ft::map<int, int>  ft_v2(ft_v);
 
-    std::map<int, int> std_v2(std_v);
-    ft::map<int, int>  ft_v2(ft_v);
+      LABEL("std", "ft");
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+      std_v.erase(1);
+      ft_v.erase(1);
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+      std_v2.erase(1);
+      ft_v2.erase(1);
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+    }
 
-    LABEL("std", "ft");
-    ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
-    std_v.erase(1);
-    ft_v.erase(1);
-    ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+    {
+      std::map<std::string, std::string> std_v;
+      ft::map<std::string, std::string>  ft_v;
+
+      std_v.insert(std::map<std::string, std::string>::value_type("apple", "apple"));
+      std_v.insert(std::map<std::string, std::string>::value_type("2", "2"));
+      std_v.insert(std::map<std::string, std::string>::value_type("3", "3"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("apple", "apple"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("2", "2"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("3", "3"));
+
+      std::map<std::string, std::string> std_v2(std_v);
+      ft::map<std::string, std::string>  ft_v2(ft_v);
+
+      LABEL("std", "ft");
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+      std_v.erase("apple");
+      ft_v.erase("apple");
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+      std_v2.erase("apple");
+      ft_v2.erase("apple");
+      ROW("equal", (std_v == std_v2), (ft_v == ft_v2));
+    }
   }
   {
     SUBTITLE("operator!=(nq)");
@@ -958,6 +974,30 @@ int main() {
     std_v.erase(1);
     ft_v.erase(1);
     ROW("not equal", (std_v != std_v2), (ft_v != ft_v2));
+
+    {
+      std::map<std::string, std::string> std_v;
+      ft::map<std::string, std::string>  ft_v;
+
+      std_v.insert(std::map<std::string, std::string>::value_type("apple", "apple"));
+      std_v.insert(std::map<std::string, std::string>::value_type("2", "2"));
+      std_v.insert(std::map<std::string, std::string>::value_type("3", "3"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("apple", "apple"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("2", "2"));
+      ft_v.insert(ft::map<std::string, std::string>::value_type("3", "3"));
+
+      std::map<std::string, std::string> std_v2(std_v);
+      ft::map<std::string, std::string>  ft_v2(ft_v);
+
+      LABEL("std", "ft");
+      ROW("equal", (std_v != std_v2), (ft_v != ft_v2));
+      std_v.erase("apple");
+      ft_v.erase("apple");
+      ROW("equal", (std_v != std_v2), (ft_v != ft_v2));
+      std_v2.erase("apple");
+      ft_v2.erase("apple");
+      ROW("equal", (std_v != std_v2), (ft_v != ft_v2));
+    }
   }
   {
     SUBTITLE("operator<(l)");

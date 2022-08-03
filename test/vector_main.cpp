@@ -207,6 +207,9 @@ int main() {
     print_cont("std", std_v);
     print_cont("ft ", ft_v);
 
+    ft_v.begin()++;
+    ft_v.rbegin()++;
+
     SUBTITLE("reverse_iterator");
 
     *(std_v.rbegin() + 1) = -99;

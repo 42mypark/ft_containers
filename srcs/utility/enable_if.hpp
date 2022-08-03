@@ -1,3 +1,6 @@
+#ifndef enable_if_HPP
+#define enable_if_HPP
+
 namespace ft {
 
 template <bool B, typename T = void>
@@ -9,3 +12,5 @@ struct enable_if<true, T> {
 };
 
 }  // namespace ft
+
+#endif  // enable_if_HPP

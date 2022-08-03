@@ -17,9 +17,7 @@ class rbtree_const_iterator {
   typedef const value_type&                   reference;
   typedef bidirectional_iterator_tag          iterator_category;
   typedef rbtreeNode<value_type>              node_type;
-  typedef typename node_type::pointer         node_pointer;
   typedef typename node_type::const_pointer   const_node_pointer;
-  typedef typename node_type::reference       node_reference;
   typedef typename node_type::const_reference const_node_reference;
 
  protected:
@@ -42,7 +40,7 @@ class rbtree_const_iterator {
   rbtree_const_iterator(const rbtree_iterator<value_type>& it) : current_(it.base()) {}
 
   // Member Interface
-  node_pointer base() const { return current_; }
+  const_node_pointer base() const { return current_; }
 
   // Member Operator
   rbtree_const_iterator& operator=(const rbtree_const_iterator<Value>& other) {
@@ -82,13 +80,14 @@ class rbtree_const_iterator {
       current_ = current_->left_;
       while (!isRightNil())
         current_ = current_->right_;
+    } else if (isLeftNil() && isRight()) {
+      current_ = current_->parent_;
     } else if (isLeftNil() && isLeft()) {
       current_ = current_->parent_;
       while (!isRight())
         current_ = current_->parent_;
       current_ = current_->parent_;
-    } else if (isLeftNil() && isRight())
-      current_ = current_->parent_;
+    }
     return *this;
   }
   rbtree_const_iterator operator--(int) {
@@ -124,14 +123,12 @@ class rbtree_const_iterator {
 // Non Member Operator
 
 template <typename Value1, typename Value2>
-bool operator==(const rbtree_const_iterator<Value1>& lhs,
-                const rbtree_const_iterator<Value2>& rhs) {
+bool operator==(const rbtree_const_iterator<Value1>& lhs, const rbtree_const_iterator<Value2>& rhs) {
   return lhs.base() == rhs.base();
 }
 
 template <typename Value1, typename Value2>
-bool operator!=(const rbtree_const_iterator<Value1>& lhs,
-                const rbtree_const_iterator<Value2>& rhs) {
+bool operator!=(const rbtree_const_iterator<Value1>& lhs, const rbtree_const_iterator<Value2>& rhs) {
   return lhs.base() != rhs.base();
 }
 

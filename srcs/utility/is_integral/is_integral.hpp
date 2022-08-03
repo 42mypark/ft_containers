@@ -1,3 +1,8 @@
+#ifndef is_integral_HPP
+#define is_integral_HPP
+
+#include <type_traits>
+
 #include "integral_constant.hpp"
 #include "remove_cv.hpp"
 
@@ -51,6 +56,22 @@ struct is_integral_helper<unsigned long long> : public true_type {};
 template <>
 struct is_integral_helper<long long> : public true_type {};
 
+template <>
+struct is_integral_helper<wchar_t> : public true_type {};
+
 template <typename T>
 struct is_integral : public is_integral_helper<typename remove_cv<T>::type>::type {};
+
+template <typename T>
+bool operator==(const is_integral<T>&, const std::is_integral<T>&) {
+  return is_integral<T>::value == std::is_integral<T>::value;
+}
+
+template <typename T>
+bool operator==(const std::is_integral<T>&, const is_integral<T>&) {
+  return is_integral<T>::value == std::is_integral<T>::value;
+}
+
 }  // namespace ft
+
+#endif

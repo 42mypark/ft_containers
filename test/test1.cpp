@@ -13,11 +13,6 @@ void print_cont(const std::string& tag, Cont c) {
   std::cout << std::endl;
 }
 
-#include <algorithm>
-#include <iostream>
-#include <random>
-#include <vector>
-
 // int main() {
 //   std::vector<int> v1{1, 2, 3, 4};
 //   std::vector<int> v2{1, 2, 3, 4};
@@ -112,27 +107,42 @@ void print_cont(const std::string& tag, Cont c) {
 // }
 
 #include <map>
-#include <memory>
+
+#include "map.hpp"
+
+// namespace ft = std;
 
 int main() {
-  std::map<int, int> m;
-  std::map<int, int> m2;
+  {
+    ft::map<int, int, std::greater<int> > mp, mp2;
+    mp.insert(ft::make_pair(10, 10));
+    mp.insert(ft::make_pair(5, 5));
 
-  m.insert(std::make_pair(10, 1));
-  m.insert(std::make_pair(20, 2));
-  m.insert(std::make_pair(30, 2));
+    for (int i = 1; i < 12; i++) {
+      std::cout << mp.lower_bound(i)->first << std::endl;
+      std::cout << mp.lower_bound(i)->second << std::endl;
+    }
+    // mp2.insert(ft::make_pair(10, 10));
+    // if (mp.lower_bound(11) == mp.end())
+    //   std::cout << "1" << std::endl;
+    // if (mp2.lower_bound(1) == mp2.end())
+    //   std::cout << "1" << std::endl;
+  }
 
-  std::map<int, int>::iterator it = m.begin();
-  std::map<int, int>::iterator it2 = m.begin();
-  std::map<int, int>::iterator it3 = m2.begin();
+  std::cout << '\n';
+  {
+    std::map<int, int, std::greater<int> > mp, mp2;
+    mp.insert(std::make_pair(10, 10));
+    mp.insert(std::make_pair(5, 5));
 
-  std::cout << it->first << std::endl;
-  std::cout << it->second << std::endl;
-
-  std::cout << (it++)->first << std::endl;
-  std::cout << it->second << std::endl;
-  std::cout << typeid(*it).name() << std::endl;
-
-  std::cout << m.upper_bound(30)->first << std::endl;
-  std::cout << m.lower_bound(20)->first << std::endl;
+    for (int i = 1; i < 12; i++) {
+      std::cout << mp.lower_bound(i)->first << std::endl;
+      std::cout << mp.lower_bound(i)->second << std::endl;
+    }
+    // mp2.insert(std::make_pair(10, 10));
+    // if (mp.lower_bound(11) == mp.end())
+    //   std::cout << "1" << std::endl;
+    // if (mp2.lower_bound(1) == mp2.end())
+    //   std::cout << "1" << std::endl;
+  }
 }
