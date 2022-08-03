@@ -18,11 +18,12 @@ class rbtree_const_iterator {
   typedef bidirectional_iterator_tag          iterator_category;
   typedef rbtreeNode<value_type>              node_type;
   typedef typename node_type::pointer         node_pointer;
+  typedef typename node_type::const_pointer   const_node_pointer;
   typedef typename node_type::reference       node_reference;
   typedef typename node_type::const_reference const_node_reference;
 
  protected:
-  node_pointer current_;
+  const_node_pointer current_;
 
  private:
   // Member Method
@@ -36,8 +37,7 @@ class rbtree_const_iterator {
   // Constructor & Destructor
   ~rbtree_const_iterator() {}
   rbtree_const_iterator() : current_(NULL) {}
-  rbtree_const_iterator(const_node_reference node)
-      : current_(const_cast<node_pointer>(&node)) {}  // ?
+  rbtree_const_iterator(const_node_reference node) : current_(&node) {}
   rbtree_const_iterator(const rbtree_const_iterator& it) : current_(it.base()) {}
   rbtree_const_iterator(const rbtree_iterator<value_type>& it) : current_(it.base()) {}
 

@@ -14,6 +14,7 @@ struct rbtreeNode {
   typedef Value             value_type;
   typedef enum NodeColor    color;
   typedef rbtreeNode*       pointer;
+  typedef constrbtreeNode*  const_pointer;
   typedef rbtreeNode&       reference;
   typedef const rbtreeNode& const_reference;
 
