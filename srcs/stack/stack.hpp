@@ -117,6 +117,3 @@ bool operator>=(const stack<T, Cont>& a, const stack<T, Cont>& b) {
 }  // namespace ft
 
 #endif  // stack_HPP
-
-#include <stack>
-std::stack<int> s;

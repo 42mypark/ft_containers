@@ -106,43 +106,52 @@ void print_cont(const std::string& tag, Cont c) {
 //   }
 // }
 
-#include <map>
+#include <vector>
 
-#include "map.hpp"
+#include "vector.hpp"
 
 // namespace ft = std;
 
 int main() {
-  {
-    ft::map<int, int, std::greater<int> > mp, mp2;
-    mp.insert(ft::make_pair(10, 10));
-    mp.insert(ft::make_pair(5, 5));
+  std::vector<int> std_v;
+  ft::vector<int>  ft_v;
 
-    for (int i = 1; i < 12; i++) {
-      std::cout << mp.lower_bound(i)->first << std::endl;
-      std::cout << mp.lower_bound(i)->second << std::endl;
-    }
-    // mp2.insert(ft::make_pair(10, 10));
-    // if (mp.lower_bound(11) == mp.end())
-    //   std::cout << "1" << std::endl;
-    // if (mp2.lower_bound(1) == mp2.end())
-    //   std::cout << "1" << std::endl;
-  }
+  std::vector<int> std_v2;
+  ft::vector<int>  ft_v2;
+  std_v.push_back(1);
+  std_v.push_back(1);
+  std_v.push_back(1);
+  ft_v.push_back(1);
+  ft_v.push_back(1);
+  ft_v.push_back(1);
+  std_v2.assign(5, 2);
+  ft_v2.assign((size_t)5, 2);
+
+  print_cont("std ", std_v);
+  print_cont("std2", std_v2);
+
+  print_cont("ft  ", ft_v);
+  print_cont("ft2 ", ft_v2);
 
   std::cout << '\n';
-  {
-    std::map<int, int, std::greater<int> > mp, mp2;
-    mp.insert(std::make_pair(10, 10));
-    mp.insert(std::make_pair(5, 5));
 
-    for (int i = 1; i < 12; i++) {
-      std::cout << mp.lower_bound(i)->first << std::endl;
-      std::cout << mp.lower_bound(i)->second << std::endl;
-    }
-    // mp2.insert(std::make_pair(10, 10));
-    // if (mp.lower_bound(11) == mp.end())
-    //   std::cout << "1" << std::endl;
-    // if (mp2.lower_bound(1) == mp2.end())
-    //   std::cout << "1" << std::endl;
-  }
+  ft_v.swap(ft_v2);
+  std_v.swap(std_v2);
+
+  print_cont("std ", std_v);
+  print_cont("std2", std_v2);
+
+  print_cont("ft  ", ft_v);
+  print_cont("ft2 ", ft_v2);
+
+  std::cout << '\n';
+
+  ft_v.swap(ft_v2);
+  std_v.swap(std_v2);
+
+  print_cont("std ", std_v);
+  print_cont("std2", std_v2);
+
+  print_cont("ft  ", ft_v);
+  print_cont("ft2 ", ft_v2);
 }

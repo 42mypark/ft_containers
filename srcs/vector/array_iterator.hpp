@@ -40,11 +40,11 @@ class array_iterator {
 
   // Member operator
   template <typename U>
-  array_iterator& operator=(const array_iterator<U>& other) {
+  array_iterator& operator=(array_iterator<U>& other) {
     current_ = other.base();
     return (*this);
   }
-  array_iterator& operator=(const array_const_iterator<Iter>& other) {
+  array_iterator& operator=(array_const_iterator<Iter>& other) {
     current_ = other.base();
     return (*this);
   }

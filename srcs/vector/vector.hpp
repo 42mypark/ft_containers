@@ -187,7 +187,7 @@ class vector {
       expand(new_cap);
     }
     pos = begin_ + index;
-    for (iterator it = end_ - 1; it != pos - 1; --it) {
+    for (pointer it = end_.base() - 1; it != pos.base() - 1; --it) {
       *(it + 1) = *it;
     }
     ++end_;
@@ -205,10 +205,10 @@ class vector {
       expand(new_cap);
     }
     pos = begin_ + index;
-    for (iterator it = end_ - 1; it != pos - 1; --it) {
+    for (pointer it = end_.base() - 1; it != pos.base() - 1; --it) {
       *(it + count) = *it;
     }
-    for (iterator it = pos; it != pos + count; ++it) {
+    for (pointer it = pos.base(); it != pos.base() + count; ++it) {
       *it = value;
     }
     end_ += count;
@@ -226,18 +226,21 @@ class vector {
       expand(new_cap);
     }
     pos = begin_ + index;
-    for (iterator it = end_ - 1; it != pos - 1; --it) {
+    for (pointer it = end_.base() - 1; it != pos.base() - 1; --it) {
       *(it + count) = *it;
     }
+    pointer p = pos.base();
     for (size_type i = 0; i < count; ++i) {
-      *(pos + i) = *(first + i);
+      *(p + i) = *(first + i);
     }
     end_ += count;
   }
 
   // erase
   iterator erase(iterator pos) {
-    for (iterator it = pos; it + 1 != end_; ++it) {
+    pointer p = pos.base();
+    pointer e = end_.base();
+    for (pointer it = p; it + 1 != e; ++it) {
       *it = *(it + 1);
     }
     --end_;
@@ -246,9 +249,12 @@ class vector {
   iterator erase(iterator first, iterator last) {
     if (first >= last)
       return last;
-    int i;
-    for (i = 0; last + i != end_; ++i) {
-      *(first + i) = *(last + i);
+    int     i;
+    pointer f = first.base();
+    pointer l = last.base();
+    pointer e = end_.base();
+    for (i = 0; l + i != e; ++i) {
+      *(f + i) = *(l + i);
     }
     end_ = first + i;
     return first;
@@ -274,22 +280,24 @@ class vector {
     } else if (static_cast<difference_type>(count) < end_ - begin_) {
       end_ = begin_ + count;
     }
+    pointer b = begin_.base();
     for (size_type i = end_ - begin_; i < count; ++i) {
-      *(begin_ + i) = value;
+      *(b + i) = value;
       ++end_;
     }
   }
 
   void swap(vector& other) {
-    vector tmp(other);
-    other.clear();
-    other.insert(other.begin(), begin_, end_);
-    clear();
-    insert(begin_, tmp.begin(), tmp.end());
+    iterator tmp = begin_;
+    begin_ = other.begin_;
+    other.begin_ = tmp;
+    tmp = end_;
+    end_ = other.end_;
+    other.end_ = tmp;
+    tmp = capacity_;
+    capacity_ = other.capacity_;
+    other.capacity_ = tmp;
   }
-
-  // template <typename T1, class C1>
-  // friend bool swap(const vector<T1, C1>& lhs, const vector<T1, C1>& rhs);
 };
 
 // Non member function
