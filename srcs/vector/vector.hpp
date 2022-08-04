@@ -18,8 +18,8 @@ namespace ft {
 
 template <typename T, typename Allocator = std::allocator<T> >
 class vector {
- public:
   // Types
+ public:
   typedef T                                      value_type;
   typedef Allocator                              allocator_type;
   typedef std::size_t                            size_type;
@@ -33,6 +33,7 @@ class vector {
   typedef ft::reverse_iterator<iterator>         reverse_iterator;
   typedef ft::reverse_iterator<const_iterator>   const_reverse_iterator;
 
+  // Member Variable
  protected:
   pointer        begin_;
   pointer        end_;
@@ -43,9 +44,12 @@ class vector {
  private:
   void expand(size_type new_cap);
 
-  // Destructor & Constructor
+  // Destructor
  public:
   ~vector() { alloc_.deallocate(begin_, capacity_ - begin_); }
+
+  // Constructor
+ public:
   vector();                                                                                                // 1
   explicit vector(const allocator_type& alloc);                                                            // 2
   explicit vector(size_type count, const T& value = T(), const allocator_type& alloc = allocator_type());  // 3
