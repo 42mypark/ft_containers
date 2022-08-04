@@ -7,15 +7,8 @@ namespace ft {
 
 template <typename T, typename Cont = ft::vector<T> >
 class stack {
- private:
- protected:
-  Cont c;
-
+  // Types
  public:
-  ~stack();
-  explicit stack(const Cont& cont = Cont());
-  stack(const stack<T, Cont>& ms);
-  stack<T, Cont>&                               operator=(const stack<T, Cont>& ms);
   typedef Cont                                  container_type;
   typedef typename Cont::value_type             value_type;
   typedef typename Cont::size_type              size_type;
@@ -25,13 +18,31 @@ class stack {
   typedef typename Cont::const_iterator         const_iterator;
   typedef typename Cont::reverse_iterator       reverse_iterator;
   typedef typename Cont::const_reverse_iterator const_reverse_iterator;
-  void                                          pop();
-  void                                          push(const value_type& value);
-  reference                                     top();
-  const_reference                               top() const;
-  bool                                          empty() const;
-  size_type                                     size() const;
 
+  // Member Variable
+ protected:
+  Cont c;
+
+  // Destructor
+ public:
+  ~stack();
+
+  // Constructor
+ public:
+  explicit stack(const Cont& cont = Cont());
+  stack(const stack<T, Cont>& ms);
+
+  // Interface
+ public:
+  stack<T, Cont>& operator=(const stack<T, Cont>& ms);
+  void            pop();
+  void            push(const value_type& value);
+  reference       top();
+  const_reference top() const;
+  bool            empty() const;
+  size_type       size() const;
+
+  // friend Functions
   template <typename T1, class C1>
   friend bool operator==(const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
 

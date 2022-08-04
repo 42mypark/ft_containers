@@ -5,7 +5,6 @@ SRCS_UTILS	=	is_integral.cpp\
 OBJS_DIR	=	objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 INCS			= -Isrcs/utility \
-						-Isrcs/utility/is_integral \
 						-Isrcs/vector\
 						-Isrcs/map\
 						-Isrcs/stack
