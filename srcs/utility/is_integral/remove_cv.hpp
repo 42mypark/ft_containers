@@ -1,3 +1,6 @@
+#ifndef remove_cv_HPP
+#define remove_cv_HPP
+
 namespace ft {
 template <typename T>
 struct remove_const {
@@ -24,3 +27,5 @@ struct remove_cv {
   typedef typename remove_const<typename remove_volatile<T>::type>::type type;
 };
 }  // namespace ft
+
+#endif  // remove_cv_HPP

@@ -4,67 +4,9 @@
 #include <limits>
 
 #include "pair.hpp"
+#include "rbtreeNode.hpp"
 
 namespace ft {
-
-enum NodeColor { BLACK, RED };
-
-template <typename Value>
-struct rbtreeNode {
-  typedef Value             value_type;
-  typedef enum NodeColor    color;
-  typedef rbtreeNode*       pointer;
-  typedef const rbtreeNode* const_pointer;
-  typedef rbtreeNode&       reference;
-  typedef const rbtreeNode& const_reference;
-
-  value_type value_;
-  color      color_;
-  pointer    left_, right_, parent_;
-
-  ~rbtreeNode() {}
-  rbtreeNode(const value_type& v, reference nil) : value_(v), color_(RED), left_(&nil), right_(&nil), parent_(&nil) {}
-  rbtreeNode(color c) : color_(c), left_(this), right_(this), parent_(NULL) {}
-
- private:
-  template <typename T>
-  void swap(T& a, T& b) {
-    T tmp;
-    tmp = a;
-    a = b;
-    b = tmp;
-  }
-  void adjust_self(pointer a, pointer b) {
-    if (a->parent_ == a)
-      a->parent_ = b;
-    if (a->left_ == a)
-      a->left_ = b;
-    if (a->right_ == a)
-      a->right_ = b;
-  }
-  void change_surround(reference node, reference other, reference nil) {
-    if (node.left_ != &nil)
-      node.left_->parent_ = &node;
-    if (node.right_ != &nil)
-      node.right_->parent_ = &node;
-    if (node.parent_->left_ == &other)
-      node.parent_->left_ = &node;
-    if (node.parent_->right_ == &other)
-      node.parent_->right_ = &node;
-  }
-
- public:
-  void swap(rbtreeNode& other, reference nil) {
-    swap(parent_, other.parent_);
-    swap(left_, other.left_);
-    swap(right_, other.right_);
-    swap(color_, other.color_);
-    adjust_self(this, &other);
-    adjust_self(&other, this);
-    change_surround(*this, other, nil);
-    change_surround(other, *this, nil);
-  }
-};
 
 template <typename Key, typename Value, typename Compare, typename Allocator, typename Extract>
 class rbtree {
