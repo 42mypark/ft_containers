@@ -92,7 +92,7 @@ int main() {
     ft::map<int, int>  ft_m;
     std::map<int, int> std_m;
 
-    ft_m = fm;
+    ft_m  = fm;
     std_m = sm;
 
     LABEL("std", "ft");
@@ -151,7 +151,7 @@ int main() {
     // ROW("[-1]", std_m[-1], ft_m[-1]);
     // ROW("[-2]", std_m[-2], ft_m[-2]);
     std_m[6] = 6;
-    ft_m[6] = 6;
+    ft_m[6]  = 6;
     print_cont("std", std_m);
     print_cont("ft ", ft_m);
   }
@@ -235,10 +235,25 @@ int main() {
     ft::map<int, int>  ft_m;
     std::map<int, int> std_m;
 
-    ft_m.insert(ft::map<int, int>::value_type(1, 1));
-    ft_m.insert(ft::map<int, int>::value_type(2, 2));
-    ft_m.insert(ft::map<int, int>::value_type(3, 3));
-    ft_m.insert(ft::map<int, int>::value_type(4, 4));
+    for (int i = 0; i < 50; i++) {
+      ft_m.insert(ft::map<int, int>::value_type(i, i));
+    }
+    // ft_m.insert(ft::map<int, int>::value_type(2, 2));
+    // ft_m.insert(ft::map<int, int>::value_type(3, 3));
+    // ft_m.insert(ft::map<int, int>::value_type(1, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(5, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(10, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(8, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(200, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(150, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(14, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(41, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(32, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(42, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(65, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(72, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(48, 1));
+    // ft_m.insert(ft::map<int, int>::value_type(33, 1));
 
     std_m.insert(std::map<int, int>::value_type(1, 1));
     std_m.insert(std::map<int, int>::value_type(2, 2));
@@ -317,6 +332,7 @@ int main() {
     std_v.insert(std::map<int, int>::value_type(3, 3));
     ft_v.insert(ft::map<int, int>::value_type(1, 1));
     ft_v.erase(ft_v.begin());
+    print_cont("ft ", ft_v);
     ft_v.insert(ft::map<int, int>::value_type(1, 1));
     ft_v.insert(ft::map<int, int>::value_type(2, 2));
     ft_v.insert(ft::map<int, int>::value_type(3, 3));
@@ -657,9 +673,9 @@ int main() {
 
     {
       std::map<int, int>::iterator stdi2 = std_v.equal_range(2).first;
-      ft::map<int, int>::iterator  fti2 = ft_v.equal_range(2).first;
+      ft::map<int, int>::iterator  fti2  = ft_v.equal_range(2).first;
       std::map<int, int>::iterator stdi3 = std_v.equal_range(2).second;
-      ft::map<int, int>::iterator  fti3 = ft_v.equal_range(2).second;
+      ft::map<int, int>::iterator  fti3  = ft_v.equal_range(2).second;
 
       LABEL("std", "ft");
       ROW("first", stdi2->first, fti2->first);
@@ -669,9 +685,9 @@ int main() {
     }
     {
       std::map<int, int>::iterator stdi4 = std_v.equal_range(5).first;
-      ft::map<int, int>::iterator  fti4 = ft_v.equal_range(5).first;
+      ft::map<int, int>::iterator  fti4  = ft_v.equal_range(5).first;
       std::map<int, int>::iterator stdi5 = std_v.equal_range(5).second;
-      ft::map<int, int>::iterator  fti5 = ft_v.equal_range(5).second;
+      ft::map<int, int>::iterator  fti5  = ft_v.equal_range(5).second;
 
       LABEL("std", "ft");
       ROW("first", stdi4->first, fti4->first);
@@ -681,9 +697,9 @@ int main() {
     }
     {
       std::map<int, int>::iterator stdi4 = std_v.equal_range(0).first;
-      ft::map<int, int>::iterator  fti4 = ft_v.equal_range(0).first;
+      ft::map<int, int>::iterator  fti4  = ft_v.equal_range(0).first;
       std::map<int, int>::iterator stdi5 = std_v.equal_range(0).second;
-      ft::map<int, int>::iterator  fti5 = ft_v.equal_range(0).second;
+      ft::map<int, int>::iterator  fti5  = ft_v.equal_range(0).second;
 
       LABEL("std", "ft");
       ROW("first", stdi4->first, fti4->first);
@@ -693,9 +709,9 @@ int main() {
     }
     {
       std::map<int, int>::iterator stdi4 = std_v.equal_range(-4).first;
-      ft::map<int, int>::iterator  fti4 = ft_v.equal_range(-4).first;
+      ft::map<int, int>::iterator  fti4  = ft_v.equal_range(-4).first;
       std::map<int, int>::iterator stdi5 = std_v.equal_range(-4).second;
-      ft::map<int, int>::iterator  fti5 = ft_v.equal_range(-4).second;
+      ft::map<int, int>::iterator  fti5  = ft_v.equal_range(-4).second;
 
       LABEL("std", "ft");
       ROW("first", stdi4->first, fti4->first);
@@ -705,9 +721,9 @@ int main() {
     }
     {
       std::map<int, int>::iterator stdi4 = std_v.equal_range(-5).first;
-      ft::map<int, int>::iterator  fti4 = ft_v.equal_range(-5).first;
+      ft::map<int, int>::iterator  fti4  = ft_v.equal_range(-5).first;
       std::map<int, int>::iterator stdi5 = std_v.equal_range(-5).second;
-      ft::map<int, int>::iterator  fti5 = ft_v.equal_range(-5).second;
+      ft::map<int, int>::iterator  fti5  = ft_v.equal_range(-5).second;
 
       LABEL("std", "ft");
       ROW("first", stdi4->first, fti4->first);

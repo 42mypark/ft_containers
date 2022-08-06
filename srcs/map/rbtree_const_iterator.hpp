@@ -15,7 +15,7 @@ class rbtree_const_iterator {
   typedef Value                               value_type;
   typedef const value_type*                   pointer;
   typedef const value_type&                   reference;
-  typedef bidirectional_iterator_tag          iterator_category;
+  typedef std::bidirectional_iterator_tag     iterator_category;
   typedef rbtreeNode<value_type>              node_type;
   typedef typename node_type::const_pointer   const_node_pointer;
   typedef typename node_type::const_reference const_node_reference;

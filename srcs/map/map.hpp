@@ -50,7 +50,11 @@ class map {
     value_compare(key_compare c) : comp(c) {}
 
    public:
-    bool operator()(const value_type& v1, const value_type& v2) { return comp(v1.first, v2.first); }
+    bool           operator()(const value_type& v1, const value_type& v2) { return comp(v1.first, v2.first); }
+    value_compare& operator=(const value_compare& vc) {
+      comp = vc.comp;
+      return *this;
+    }
   };
 
  protected:
@@ -112,7 +116,7 @@ class map {
 
   // Modifier
   void clear() {
-    tree_.~rbtree();
+    tree_.clear();
     size_ = 0;
   }
   ft::pair<iterator, bool> insert(const value_type& value) /*1*/ {
@@ -152,11 +156,23 @@ class map {
     return !tree_.error();
   }
   void swap(map& other) {
-    map tmp = other;
-    other.clear();
-    other.insert(begin(), end());
-    clear();
-    insert(tmp.begin(), tmp.end());
+    tree_.swap(other.tree_);
+
+    size_type s = size_;
+    size_       = other.size_;
+    other.size_ = s;
+
+    allocator_type a = alloc_;
+    alloc_           = other.alloc_;
+    other.alloc_     = a;
+
+    key_compare k = comp_;
+    comp_         = other.comp_;
+    other.comp_   = k;
+
+    value_compare v = vc_;
+    vc_             = other.vc_;
+    other.vc_       = v;
   }
 
   // Lookup

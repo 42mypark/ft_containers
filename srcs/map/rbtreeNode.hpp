@@ -20,11 +20,14 @@ struct rbtreeNode {
 
   ~rbtreeNode() {}
   rbtreeNode(const value_type& v, reference nil) : value_(v), color_(RED), left_(&nil), right_(&nil), parent_(&nil) {}
+  rbtreeNode(const value_type& v, pointer parent, reference nil)
+      : value_(v), color_(RED), left_(&nil), right_(&nil), parent_(parent) {}
   rbtreeNode(color c) : color_(c), left_(this), right_(this), parent_(NULL) {}
   rbtreeNode(const_reference n)
       : value_(n.value_), color_(n.color_), left_(n.left_), right_(n.right_), parent_(n.parent_) {}
 
  private:
+  rbtreeNode() {}
   void selfToTarget(pointer self, pointer target);
   void changeSurround(reference node, reference other, reference nil);
 
@@ -40,6 +43,7 @@ rbtreeNode<Value>& rbtreeNode<Value>::operator=(const_reference n) {
   left_   = n.left_;
   right_  = n.right_;
   parent_ = n.parent_;
+  return *this;
 }
 
 template <typename Value>
@@ -65,7 +69,7 @@ void rbtreeNode<Value>::changeSurround(reference node, reference other, referenc
 }
 
 template <typename Value>
-void rbtreeNode<Value>::swap(rbtreeNode& other, reference nil) {
+void rbtreeNode<Value>::swap(reference other, reference nil) {
   ft::swap(parent_, other.parent_);
   ft::swap(left_, other.left_);
   ft::swap(right_, other.right_);

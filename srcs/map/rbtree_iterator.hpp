@@ -11,14 +11,14 @@ class rbtree_const_iterator;
 template <typename Value>
 class rbtree_iterator {
  public:
-  typedef typename std::ptrdiff_t       difference_type;
-  typedef Value                         value_type;
-  typedef value_type*                   pointer;
-  typedef value_type&                   reference;
-  typedef bidirectional_iterator_tag    iterator_category;
-  typedef rbtreeNode<value_type>        node_type;
-  typedef typename node_type::pointer   node_pointer;
-  typedef typename node_type::reference node_reference;
+  typedef typename std::ptrdiff_t         difference_type;
+  typedef Value                           value_type;
+  typedef value_type*                     pointer;
+  typedef value_type&                     reference;
+  typedef std::bidirectional_iterator_tag iterator_category;
+  typedef rbtreeNode<value_type>          node_type;
+  typedef typename node_type::pointer     node_pointer;
+  typedef typename node_type::reference   node_reference;
 
  protected:
   node_pointer current_;

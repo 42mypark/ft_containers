@@ -1,5 +1,5 @@
-#ifndef rbtree_HPP
-#define rbtree_HPP
+#ifndef rbtree2_HPP
+#define rbtree2_HPP
 
 #include <limits>
 
@@ -26,34 +26,46 @@ class rbtree {
 
   // Member Variable
  protected:
-  node*          nil_;
+  node           nil_;
   node_pointer   root_;
   node_pointer   inserted_;
   node_allocator alloc_;
   bool           error_;
-  Compare        comp_;
-  Extract        extract_;
+  const Compare  comp_;
+  const Extract  extract_key_;
+  node_pointer   cache_red_;
 
   // Method
  private:
   bool         isRed(node_pointer n) { return n->color_ == RED; }
+  bool         isBlack(node_pointer n) { return n->color_ == BLACK; }
   bool         isLeft(node_pointer n) { return n->parent_->left_ == n; }
   bool         isRight(node_pointer n) { return n->parent_->right_ == n; }
+  bool         isUncleBlack(node_pointer n);
   size_type    countHeight(node_pointer np);
   void         colorFlip(node_pointer n);
   node_pointer rotateLeft(node_pointer np);
+  node_pointer rotateLeft(node_pointer current, node_pointer parent);
   node_pointer rotateRight(node_pointer np);
+  node_pointer rotateRight(node_pointer current, node_pointer parent);
+  void         resolveDoubleRed(node_pointer np);
   node_pointer fixUp(node_pointer np);
   void         fixRoot();
   node_pointer insert(node_pointer np, const value_type& p);
+  void         insertNode(node_pointer& pos, node_pointer parent, const value_type& v);
   node_pointer moveRedRight(node_pointer np);
   node_pointer moveRedLeft(node_pointer np);
+  void         moveRedDirection(node_pointer curr, node_pointer direction, node_pointer opposite);
+  void         moveRedToTarget(const key_type& k);
   node_pointer leftMost(node_pointer np);
+  node_pointer removeLeftMost(node_pointer np);
   node_pointer rightMost(node_pointer np);
   node_pointer removeMin(node_pointer np);
   node_pointer remove(node_pointer np, const key_type& k);
+  void         removeNode(node_pointer np);
   void         removeTree(node_pointer np);
   node_pointer search(const key_type& k);
+  node_pointer removeSearch(const key_type& k);
 
   // Desturctor
  public:
@@ -64,13 +76,7 @@ class rbtree {
   rbtree(const rbtree& t) { static_cast<void>(t); }
 
  public:
-  rbtree() : nil_(NULL), root_(NULL), inserted_(NULL), error_(false), comp_(), extract_() {
-    nil_ = alloc_.allocate(1);
-    alloc_.construct(nil_, node(BLACK));
-    root_        = nil_;
-    nil_->left_  = nil_;
-    nil_->right_ = nil_;
-  }
+  rbtree() : nil_(BLACK), root_(&nil_), inserted_(NULL), error_(false), comp_(), extract_key_(), cache_red_(&nil_) {}
 
   // Interface
  private:
@@ -82,35 +88,26 @@ class rbtree {
   void                 remove(const key_type& k);
   value_type&          searchValue(const key_type& k);
   node_reference       find(const key_type& k);
-  node_reference       nil() { return *nil_; }
-  const_node_reference nil() const { return *nil_; }
-  node_reference       leftMost() { return *(nil_->right_); }
-  const_node_reference leftMost() const { return *(nil_->right_); }
+  node_reference       nil() { return nil_; }
+  const_node_reference nil() const { return nil_; }
+  node_reference       leftMost() { return *nil_.right_; }
+  const_node_reference leftMost() const { return *nil_.right_; }
   bool                 error() { return error_; }
   node_reference       bound(const key_type& k);
   size_type            max_size() const { return std::numeric_limits<difference_type>::max() / sizeof(node); }
-  void                 swap(rbtree& other);
-  void                 clear();
 };  // class rbtree
 
 // Desturctor
 template <typename K, typename V, typename C, typename A, typename E>
 rbtree<K, V, C, A, E>::~rbtree() {
   removeTree(root_);
-  alloc_.deallocate(nil_, 1);
-  root_     = NULL;
-  inserted_ = NULL;
-  error_    = false;
-}
-
-template <typename K, typename V, typename C, typename A, typename E>
-void rbtree<K, V, C, A, E>::clear() {
-  removeTree(root_);
-  root_        = nil_;
-  nil_->left_  = nil_;
-  nil_->right_ = nil_;
+  nil_.left_   = &nil_;
+  nil_.right_  = &nil_;
+  nil_.parent_ = NULL;
+  root_        = &nil_;
   inserted_    = NULL;
   error_       = false;
+  cache_red_   = &nil_;
 }
 
 // Member Operator
@@ -126,7 +123,7 @@ rbtree<K, V, C, A, E>& rbtree<K, V, C, A, E>::operator=(const rbtree& t) {
 template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::size_type rbtree<K, V, C, A, E>::countHeight(node_pointer np) {
   size_type count = 1;
-  while (np->left_ != nil_) {
+  while (np->left_ != &nil_) {
     np = np->left_;
     ++count;
   }
@@ -134,14 +131,20 @@ typename rbtree<K, V, C, A, E>::size_type rbtree<K, V, C, A, E>::countHeight(nod
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
+bool rbtree<K, V, C, A, E>::isUncleBlack(node_pointer n) {
+  return !(isRed(n->parent_->parent_->left_) && isRed(n->parent_->parent_->right_));
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::leftMost(node_pointer np) {
-  while (np->left_ != nil_)
+  while (np->left_ != &nil_)
     np = np->left_;
   return np;
 }
+
 template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::rightMost(node_pointer np) {
-  while (np->right_ != nil_)
+  while (np->right_ != &nil_)
     np = np->right_;
   return np;
 }
@@ -162,9 +165,20 @@ typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::rotateLeft(n
   nr->left_       = np;
   nr->color_      = np->color_;
   np->color_      = RED;
-  if (np->right_ != nil_)
+  if (np->right_ != &nil_)
     np->right_->parent_ = np;
   return nr;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::rotateLeft(node_pointer current,
+                                                                               node_pointer parent) {
+  node_pointer& pos = isLeft(current) ? parent->left_ : parent->right_;
+
+  pos = rotateLeft(current);
+  if (current == root_)
+    root_ = pos;
+  return pos;
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
@@ -176,9 +190,51 @@ typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::rotateRight(
   nl->right_      = np;
   nl->color_      = np->color_;
   np->color_      = RED;
-  if (np->left_ != nil_)
+  if (np->left_ != &nil_)
     np->left_->parent_ = np;
   return nl;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::rotateRight(node_pointer current,
+                                                                                node_pointer parent) {
+  node_pointer& pos = isLeft(current) ? parent->left_ : parent->right_;
+
+  pos = rotateRight(current);
+  if (current == root_)
+    root_ = pos;
+  return pos;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+void rbtree<K, V, C, A, E>::resolveDoubleRed(node_pointer np) {
+  node_pointer curr   = np;
+  node_pointer parent = curr->parent_;
+  while (curr != root_ && parent != root_ && isRed(parent)) {
+    // uncle black
+    if (isUncleBlack(curr) && isLeft(parent)) {
+      if (isRight(curr))
+        parent = rotateLeft(parent, parent->parent_);
+      rotateRight(parent->parent_, parent->parent_->parent_);
+      colorFlip(parent->parent_);
+      return;
+    }
+    if (isUncleBlack(curr) && isRight(parent)) {
+      if (isLeft(curr))
+        parent = rotateRight(parent, parent->parent_);
+      rotateLeft(parent->parent_, parent->parent_->parent_);
+      return;
+    }
+    // uncle red
+    colorFlip(parent->parent_);
+    curr   = curr->parent_->parent_;
+    parent = curr->parent_;
+  }
+  while (curr != root_ && isRed(parent->left_) && isRed(parent->right_)) {
+    colorFlip(parent);
+    curr   = curr->parent_;
+    parent = curr->parent_;
+  }
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
@@ -215,75 +271,127 @@ typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::fixUp(node_p
   return np;
 }
 
+// template <typename K, typename V, typename C, typename A, typename E>
+// typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::insert(node_pointer np, const value_type& p) {
+//   if (np == &nil_) {
+//     inserted_ = alloc_.allocate(1);
+//     alloc_.construct(inserted_, node(p, nil_));
+//     return inserted_;
+//   }
+//   if (comp_(extract_key_(p), extract_key_(np->value_))) {
+//     np->left_          = insert(np->left_, p);
+//     np->left_->parent_ = np;
+//   } else if (comp_(extract_key_(np->value_), extract_key_(p))) {
+//     np->right_          = insert(np->right_, p);
+//     np->right_->parent_ = np;
+//   } else {
+//     inserted_ = np;
+//     error_    = true;
+//   }
+//   return fixUp(np);
+// }
+
 template <typename K, typename V, typename C, typename A, typename E>
-typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::insert(node_pointer np, const value_type& p) {
-  if (np == nil_) {
-    inserted_ = alloc_.allocate(1);
-    alloc_.construct(inserted_, node(p, *nil_));
-    return inserted_;
-  }
-  if (comp_(extract_(p), extract_(np->value_))) {
-    np->left_          = insert(np->left_, p);
-    np->left_->parent_ = np;
-  } else if (comp_(extract_(np->value_), extract_(p))) {
-    np->right_          = insert(np->right_, p);
-    np->right_->parent_ = np;
-  } else {
-    inserted_ = np;
-    error_    = true;
-  }
-  return fixUp(np);
+void rbtree<K, V, C, A, E>::insertNode(node_pointer& pos, node_pointer parent, const value_type& v) {
+  pos = alloc_.allocate(1);
+  alloc_.construct(pos, node(v, parent, nil_));
+  inserted_ = pos;
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
-typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::removeMin(node_pointer np) {
-  if (np->left_ == nil_) {
-    alloc_.deallocate(np, 1);
-    return nil_;
+typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::insert(node_pointer np, const value_type& v) {
+  (void)np;
+  key_type     v_key    = extract_key_(v);
+  node_pointer parent   = &bound(extract_key_(v));
+  key_type     p_key    = extract_key_(parent->value_);
+  bool         to_left  = comp_(v_key, p_key);
+  bool         to_right = comp_(p_key, v_key);
+
+  if (parent == &nil_) {
+    insertNode(parent->left_, parent, v);
+    root_ = inserted_;
+  } else if (to_left)
+    insertNode(parent->left_, parent, v);
+  else if (to_right)
+    insertNode(parent->right_, parent, v);
+  else {
+    error_    = true;
+    inserted_ = parent;
+    return root_;
   }
-  if (np->left_ != nil_ && !isRed(np->left_) && !isRed(np->left_->left_))
-    np = moveRedLeft(np);
-  np->left_ = removeMin(np->left_);
-  return fixUp(np);
+
+  if (isBlack(parent))
+    return root_;
+
+  resolveDoubleRed(inserted_);
+  return root_;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+void rbtree<K, V, C, A, E>::moveRedToTarget(const key_type& k) {
+  node_pointer curr     = cache_red_;
+  bool         to_right = false;
+  bool         to_left  = false;
+
+  cache_red_->color_ = RED;
+  while (curr != &nil_) {
+    to_right = comp_(extract_key_(curr->value_), k);
+    to_left  = comp_(k, extract_key_(curr->value_));
+    if (!to_right && !to_left)
+      break;
+    if (to_right) {
+      moveRedRight(curr);
+      curr = curr->right_;
+    } else {
+      moveRedLeft(curr);
+      curr = curr->left_;
+    }
+  }
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+void rbtree<K, V, C, A, E>::removeNode(node_pointer np) {
+  if (np == root_)
+    root_ = &nil_;
+  if (isLeft(np))
+    np->parent_->left_ = &nil_;
+  else
+    np->parent_->right_ = &nil_;
+  alloc_.deallocate(np, 1);
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::remove(node_pointer np, const key_type& k) {
-  if (np == nil_) {
-    error_ = true;
-    return nil_;
+  (void)np;
+  node_pointer target = removeSearch(k);
+  if (error_)
+    return root_;
+
+  if (target->right_ == &nil_) {
+    if (isRed(target->left_))  // BLACK ( 3-node )
+      rotateRight(target, target->parent_);
+    else if (isBlack(target))  // BLACK ( 2-node )
+      moveRedToTarget(k);
+    removeNode(target);
+    return root_;
   }
 
-  if (comp_(k, extract_(np->value_))) {
-    if (np->left_ != nil_ && !isRed(np->left_) && !isRed(np->left_->left_))
-      np = moveRedLeft(np);
-    np->left_ = remove(np->left_, k);
-  } else {
-    bool same;
-    if (isRed(np->left_))
-      np = rotateRight(np);
-    same = !comp_(extract_(np->value_), k);
-    if (same && np->right_ == nil_) {
-      alloc_.deallocate(np, 1);
-      return nil_;
-    }
-    if (np->right_ != nil_ && !isRed(np->right_) && !isRed(np->right_->right_))
-      np = moveRedRight(np);
-    same = !comp_(extract_(np->value_), k);
-    if (same) {
-      node_pointer min = leftMost(np->right_);
-      np->swap(*min, *nil_);
-      np         = min;
-      np->right_ = removeMin(np->right_);
-    } else
-      np->right_ = remove(np->right_, k);
-  }
-  return fixUp(np);
+  node_pointer left_most = removeLeftMost(target->right_);
+  if (isRed(left_most->right_))  // BLACK ( 3-node )
+    rotateLeft(left_most, left_most->parent_);
+  else if (isBlack(left_most))  // BLACK ( 2-node )
+    moveRedToTarget(extract_key_(left_most->value_));
+  if (target == root_)
+    root_ = left_most;
+  target->swap(*left_most, nil_);
+  removeNode(target);
+
+  return root_;
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
 void rbtree<K, V, C, A, E>::removeTree(node_pointer np) {
-  if (np == nil_)
+  if (np == &nil_)
     return;
   removeTree(np->left_);
   removeTree(np->right_);
@@ -293,23 +401,72 @@ void rbtree<K, V, C, A, E>::removeTree(node_pointer np) {
 template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::search(const key_type& k) {
   node_pointer curr = root_;
-  while (curr != nil_) {
-    if (comp_(extract_(curr->value_), k))
+  while (curr != &nil_) {
+    if (comp_(extract_key_(curr->value_), k))
       curr = curr->right_;
-    else if (comp_(k, extract_(curr->value_)))
+    else if (comp_(k, extract_key_(curr->value_)))
       curr = curr->left_;
     else
       return curr;
   }
   error_ = true;
-  return nil_;
+  return &nil_;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+void rbtree<K, V, C, A, E>::moveRedDirection(node_pointer curr, node_pointer direction, node_pointer opposite) {
+  // if (isRed(opposite->left_) && isRed(opposite->left_)) {
+  //   colorFlip(opposite);
+  //   if (isRed(curr))
+  //     resolveDoubleRed(opposite);
+  // }
+  if (isBlack(direction) && isRed(opposite))
+    rotateLeft(curr, curr->parent_);
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::removeLeftMost(node_pointer curr) {
+  while (curr->left_ != &nil_) {
+    if (isRed(curr))
+      cache_red_ = curr;
+    moveRedDirection(curr, curr->left_, curr->right_);
+    curr = curr->left_;
+  }
+  return curr;
+}
+
+template <typename K, typename V, typename C, typename A, typename E>
+typename rbtree<K, V, C, A, E>::node_pointer rbtree<K, V, C, A, E>::removeSearch(const key_type& k) {
+  node_pointer curr     = root_;
+  bool         to_left  = false;
+  bool         to_right = false;
+
+  while (curr != &nil_) {
+    to_left  = comp_(k, extract_key_(curr->value_));
+    to_right = comp_(extract_key_(curr->value_), k);
+
+    if (isRed(curr))
+      cache_red_ = curr;
+
+    if (to_right) {  // function ..
+      moveRedDirection(curr, curr->right_, curr->left_);
+      curr = curr->right_;
+    } else if (to_left) {
+      moveRedDirection(curr, curr->left_, curr->right_);
+      curr = curr->left_;
+    } else
+      return curr;
+  }
+  error_ = true;
+  return &nil_;
 }
 
 template <typename K, typename V, typename C, typename A, typename E>
 void rbtree<K, V, C, A, E>::fixRoot() {
-  nil_->left_   = root_;
-  nil_->right_  = leftMost(root_);
+  nil_.left_    = root_;
+  nil_.right_   = leftMost(root_);
   root_->color_ = BLACK;
+  cache_red_    = root_;
 }
 
 // Method End
@@ -365,46 +522,16 @@ template <typename K, typename V, typename C, typename A, typename E>
 typename rbtree<K, V, C, A, E>::node_reference rbtree<K, V, C, A, E>::bound(const key_type& k) {
   node_pointer curr = root_;
   node_pointer prev = root_;
-  while (curr != nil_) {
+  while (curr != &nil_) {
     prev = curr;
-    if (comp_(extract_(curr->value_), k))
+    if (comp_(extract_key_(curr->value_), k))
       curr = curr->right_;
-    else if (comp_(k, extract_(curr->value_)))
+    else if (comp_(k, extract_key_(curr->value_)))
       curr = curr->left_;
     else
       return *curr;
   }
   return *prev;
-}
-
-template <typename K, typename V, typename C, typename A, typename E>
-void rbtree<K, V, C, A, E>::swap(rbtree& other) {
-  node_pointer n = nil_;
-  nil_           = other.nil_;
-  other.nil_     = n;
-
-  node_pointer r = root_;
-  root_          = other.root_;
-  other.root_    = r;
-
-  fixRoot();
-  other.fixRoot();
-
-  node_pointer i  = inserted_;
-  inserted_       = other.inserted_;
-  other.inserted_ = i;
-
-  node_allocator a = alloc_;
-  alloc_           = other.alloc_;
-  other.alloc_     = a;
-
-  C c         = comp_;
-  comp_       = other.comp_;
-  other.comp_ = c;
-
-  E e            = extract_;
-  extract_       = other.extract_;
-  other.extract_ = e;
 }
 
 // Interface End

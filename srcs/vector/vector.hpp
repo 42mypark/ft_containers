@@ -371,6 +371,10 @@ void vector<T, A>::swap(vector& other) {
   tmp             = capacity_;
   capacity_       = other.capacity_;
   other.capacity_ = tmp;
+
+  allocator_type a = alloc_;
+  alloc_           = other.alloc_;
+  other.alloc_     = a;
 }
 
 // Non Member Function
