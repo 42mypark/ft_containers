@@ -16,7 +16,7 @@ template <typename Pointer>
 class array_iterator {
   // Types
  public:
-  typedef Pointer                                              iterator_type;
+  typedef Pointer                                              pointer_type;
   typedef typename iterator_traits<Pointer>::iterator_category iterator_category;
   typedef typename iterator_traits<Pointer>::value_type        value_type;
   typedef typename iterator_traits<Pointer>::difference_type   difference_type;
@@ -34,10 +34,13 @@ class array_iterator {
   // Constructor
  public:
   array_iterator() {}
-  explicit array_iterator(iterator_type it) : current_(it) {}
+  explicit array_iterator(pointer_type it) : current_(it) {}
   template <typename U>
   array_iterator(array_iterator<U>& other) : current_(other.base()) {}
-  array_iterator(array_const_iterator<Pointer>& other) : current_(other.base()) {}
+  // template <typename U>
+  // array_iterator(array_iterator<U> other) : current_(other.base()) {}
+  template <typename U>
+  array_iterator(array_const_iterator<U> other) : current_(other.base()) {}
 
   // Interface
  public:
@@ -46,7 +49,8 @@ class array_iterator {
   // Member operator
   template <typename U>
   array_iterator& operator=(array_iterator<U>& other);
-  array_iterator& operator=(array_const_iterator<Pointer>& other);
+  template <typename U>
+  array_iterator& operator=(array_const_iterator<U> other);
   array_iterator& operator=(pointer p);
   reference       operator*() const;
   pointer         operator->() const;
@@ -79,7 +83,8 @@ array_iterator<Pointer>& array_iterator<Pointer>::operator=(array_iterator<U>& o
 }
 
 template <typename Pointer>
-array_iterator<Pointer>& array_iterator<Pointer>::operator=(array_const_iterator<Pointer>& other) {
+template <typename U>
+array_iterator<Pointer>& array_iterator<Pointer>::operator=(array_const_iterator<U> other) {
   current_ = other.base();
   return (*this);
 }

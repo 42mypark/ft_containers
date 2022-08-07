@@ -1,13 +1,13 @@
-SRCS				=	$(SRCS_UTILS)
-SRCS_UTILS	=	is_integral.cpp\
+LIBSTLFT				=	$(LIBSTLFT_UTILS)
+LIBSTLFT_UTILS	=	is_integral.cpp\
 							remove_cv.cpp
 
 OBJS_DIR	=	objs
-OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-INCS			= -Isrcs/utility \
-						-Isrcs/vector\
-						-Isrcs/map\
-						-Isrcs/stack
+OBJS			=	$(addprefix $(OBJS_DIR)/, $(LIBSTLFT:.cpp=.o))
+INCS			= -Ilibstlft/utility \
+						-Ilibstlft/vector\
+						-Ilibstlft/map\
+						-Ilibstlft/stack
 
 TESTS			=	is_integral.test enable_if.test lexicographical_compare.test pair.test map.test stack.test iterator_traits.test vector.test \
 						#performance_std.test performance_ft.test
