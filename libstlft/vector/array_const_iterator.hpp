@@ -9,19 +9,19 @@
 
 namespace ft {
 
-template <typename Iter>
+template <typename Pointer>
 class array_iterator;
 
-template <typename Iter>
+template <typename Pointer>
 class array_const_iterator {
   // Types
  public:
-  typedef Iter                                              iterator_type;
-  typedef typename iterator_traits<Iter>::iterator_category iterator_category;
-  typedef typename iterator_traits<Iter>::value_type        value_type;
-  typedef typename iterator_traits<Iter>::difference_type   difference_type;
-  typedef typename iterator_traits<Iter>::pointer           pointer;
-  typedef typename iterator_traits<Iter>::reference         reference;
+  typedef Pointer                                              iterator_type;
+  typedef typename iterator_traits<Pointer>::iterator_category iterator_category;
+  typedef typename iterator_traits<Pointer>::value_type        value_type;
+  typedef typename iterator_traits<Pointer>::difference_type   difference_type;
+  typedef typename iterator_traits<Pointer>::pointer           pointer;
+  typedef typename iterator_traits<Pointer>::reference         reference;
 
   // Member Variable
  protected:
@@ -37,7 +37,7 @@ class array_const_iterator {
   explicit array_const_iterator(iterator_type it) : current_(it) {}
   template <typename U>
   array_const_iterator(array_const_iterator<U>& other) : current_(other.base()) {}
-  array_const_iterator(array_iterator<Iter>& other) : current_(other.base()) {}
+  array_const_iterator(array_iterator<Pointer>& other) : current_(other.base()) {}
 
   // Interface
  public:
@@ -46,7 +46,7 @@ class array_const_iterator {
   // Member operator
   template <typename U>
   array_const_iterator& operator=(array_const_iterator<U>& other);
-  array_const_iterator& operator=(array_iterator<Iter>& other);
+  array_const_iterator& operator=(array_iterator<Pointer>& other);
   array_const_iterator& operator=(pointer p);
   reference             operator*() const;
   pointer               operator->() const;
@@ -71,97 +71,97 @@ class array_const_iterator {
 
 // Member Operator
 
-template <typename Iter>
+template <typename Pointer>
 template <typename U>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator=(array_const_iterator<U>& other) {
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator=(array_const_iterator<U>& other) {
   current_ = other.base();
   return (*this);
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator=(array_iterator<Iter>& other) {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator=(array_iterator<Pointer>& other) {
   current_ = other.base();
   return (*this);
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator=(pointer p) {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator=(pointer p) {
   current_ = p;
   return (*this);
 }
 
-template <typename Iter>
-typename array_const_iterator<Iter>::reference array_const_iterator<Iter>::operator*() const {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::reference array_const_iterator<Pointer>::operator*() const {
   return *current_;
 }
 
-template <typename Iter>
-typename array_const_iterator<Iter>::pointer array_const_iterator<Iter>::operator->() const {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::pointer array_const_iterator<Pointer>::operator->() const {
   return to_pointer(current_);
 }
-template <typename Iter>
-typename array_const_iterator<Iter>::reference array_const_iterator<Iter>::operator[](difference_type n) const {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::reference array_const_iterator<Pointer>::operator[](difference_type n) const {
   return *(*this + n);
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator++() {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator++() {
   ++current_;
   return *this;
 }
 
-template <typename Iter>
-array_const_iterator<Iter> array_const_iterator<Iter>::operator++(int) {
+template <typename Pointer>
+array_const_iterator<Pointer> array_const_iterator<Pointer>::operator++(int) {
   array_const_iterator tmp = *this;
   ++current_;
   return tmp;
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator--() {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator--() {
   --current_;
   return *this;
 }
 
-template <typename Iter>
-array_const_iterator<Iter> array_const_iterator<Iter>::operator--(int) {
+template <typename Pointer>
+array_const_iterator<Pointer> array_const_iterator<Pointer>::operator--(int) {
   array_const_iterator tmp = *this;
   --current_;
   return tmp;
 }
 
-template <typename Iter>
-array_const_iterator<Iter> array_const_iterator<Iter>::operator+(difference_type n) const {
+template <typename Pointer>
+array_const_iterator<Pointer> array_const_iterator<Pointer>::operator+(difference_type n) const {
   return array_const_iterator(current_ + n);
 }
 
-template <typename Iter>
-array_const_iterator<Iter> array_const_iterator<Iter>::operator-(difference_type n) const {
+template <typename Pointer>
+array_const_iterator<Pointer> array_const_iterator<Pointer>::operator-(difference_type n) const {
   return array_const_iterator(current_ - n);
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator+=(difference_type n) {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator+=(difference_type n) {
   current_ += n;
   return *this;
 }
 
-template <typename Iter>
-array_const_iterator<Iter>& array_const_iterator<Iter>::operator-=(difference_type n) {
+template <typename Pointer>
+array_const_iterator<Pointer>& array_const_iterator<Pointer>::operator-=(difference_type n) {
   current_ -= n;
   return *this;
 }
 
 // Static Functions
-template <typename Iter>
+template <typename Pointer>
 template <typename T>
-T* array_const_iterator<Iter>::to_pointer(T* p) {
+T* array_const_iterator<Pointer>::to_pointer(T* p) {
   return p;
 }
 
-template <typename Iter>
+template <typename Pointer>
 template <typename T>
-typename array_const_iterator<Iter>::pointer array_const_iterator<Iter>::to_pointer(T t) {
+typename array_const_iterator<Pointer>::pointer array_const_iterator<Pointer>::to_pointer(T t) {
   return t.operator->();
 }
 
@@ -252,27 +252,27 @@ bool operator<=(const array_const_iterator<Iter1>& lhs, const array_iterator<Ite
   return lhs.base() <= rhs.base();
 }
 
-template <typename Iter>
-array_const_iterator<Iter> operator+(typename array_const_iterator<Iter>::difference_type n,
-                                     const array_const_iterator<Iter>&                    it) {
-  return array_const_iterator<Iter>(it.base() + n);
+template <typename Pointer>
+array_const_iterator<Pointer> operator+(typename array_const_iterator<Pointer>::difference_type n,
+                                        const array_const_iterator<Pointer>&                    it) {
+  return array_const_iterator<Pointer>(it.base() + n);
 }
 
-template <typename Iter>
-typename array_const_iterator<Iter>::difference_type operator-(const array_const_iterator<Iter>& lhs,
-                                                               const array_const_iterator<Iter>& rhs) {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::difference_type operator-(const array_const_iterator<Pointer>& lhs,
+                                                                  const array_const_iterator<Pointer>& rhs) {
   return lhs.base() - rhs.base();
 }
 
-template <typename Iter>
-typename array_const_iterator<Iter>::difference_type operator-(const array_iterator<Iter>&       lhs,
-                                                               const array_const_iterator<Iter>& rhs) {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::difference_type operator-(const array_iterator<Pointer>&       lhs,
+                                                                  const array_const_iterator<Pointer>& rhs) {
   return lhs.base() - rhs.base();
 }
 
-template <typename Iter>
-typename array_const_iterator<Iter>::difference_type operator-(const array_const_iterator<Iter>& lhs,
-                                                               const array_iterator<Iter>&       rhs) {
+template <typename Pointer>
+typename array_const_iterator<Pointer>::difference_type operator-(const array_const_iterator<Pointer>& lhs,
+                                                                  const array_iterator<Pointer>&       rhs) {
   return lhs.base() - rhs.base();
 }
 
