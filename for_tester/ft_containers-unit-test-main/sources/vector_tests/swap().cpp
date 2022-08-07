@@ -49,10 +49,10 @@ std::vector<int> swap_test(_vector<T> vector) {
   vector.swap(tmp3);
   v.push_back(vector[2]);
   v.push_back(vector.size());
-  std::swap(vector, tmp2);
+  ft::swap(vector, tmp2);
   v.push_back(vector[2]);
   v.push_back(vector.size());
-  std::swap(vector, tmp4);
+  ft::swap(vector, tmp4);
   g_end2 = timer();
   v.push_back(vector[2]);
   v.push_back(vector.size());
