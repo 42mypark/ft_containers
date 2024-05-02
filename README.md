@@ -1,6 +1,6 @@
 # ft_containers
 
-C++98의 STL을 직접 구현해보며 그 구조를 학습한 프로젝트입니다.
+This project's goal is to implement some containers of STL in C++98.
 
 ## Implemented features
 - vector
